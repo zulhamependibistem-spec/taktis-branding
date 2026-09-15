@@ -187,7 +187,7 @@ export default function ExportManager() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `REPORT_TAKTIS_TSJ_${from}_sd_${to}.xlsx`;
+    a.download = `REPORT_TAKTIS_BRANDING_${from}_sd_${to}.xlsx`;
     a.click();
     URL.revokeObjectURL(url);
 

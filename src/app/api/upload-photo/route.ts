@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
         const geoRes = await fetch(
           `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`,
           {
-            headers: { "User-Agent": "TaktisTsj-SPG-App/1.0" },
+            headers: { "User-Agent": "TaktisBranding-SPG-App/1.0" },
             signal: AbortSignal.timeout(3000),
           }
         );

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/ui/Icon";
 
-const NAG_KEY = "taktis_tsj_spg_checkin_nag";
+const NAG_KEY = "taktis_branding_spg_checkin_nag";
 
 export default function CheckInReminder({ isCheckedIn }: { isCheckedIn: boolean }) {
   const [show, setShow] = useState(() => {

@@ -304,7 +304,7 @@ export default async function SpgHome() {
         </section>
 
         <p className="text-center text-[11px] text-slate-400">
-          TAKTIS TSJ · PT Bistem Jaya Mandiri
+          TAKTIS Branding · PT Bistem Jaya Mandiri
         </p>
       </main>
 

@@ -134,7 +134,7 @@ for(const x of userOutlets){
 // EMIT SQL
 // =========================================================
 let sql = "";
-sql += "-- TAKTIS TSJ import data REAL\n-- Generated automatically. Review sebelum dijalankan.\n\n";
+sql += "-- TAKTIS Branding import data REAL\n-- Generated automatically. Review sebelum dijalankan.\n\n";
 sql += "BEGIN;\n\n";
 
 // 1. hapus dummy + reset (import idempoten: hapus semua dulu, insert ulang)

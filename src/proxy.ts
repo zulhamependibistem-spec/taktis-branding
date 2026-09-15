@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifySessionToken } from "@/lib/session";
 
-const SESSION_COOKIE = "taktis_tsj_session";
+const SESSION_COOKIE = "taktis_branding_session";
 
 const ROLE_PATHS: Record<string, string> = {
   spg: "/spg",

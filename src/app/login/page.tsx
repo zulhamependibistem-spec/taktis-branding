@@ -70,7 +70,7 @@ export default async function LoginPage({
         </form>
 
         <p className="mt-8 text-center text-xs text-slate-400">
-          TAKTIS TSJ · PT Bistem Jaya Mandiri
+          TAKTIS Branding · PT Bistem Jaya Mandiri
           <span className="mx-1.5 text-slate-300">·</span>
           © Projo Cabang Klender
         </p>

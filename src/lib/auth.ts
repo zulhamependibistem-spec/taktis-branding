@@ -3,7 +3,7 @@ import { createServerClient } from "./supabase/server";
 import { createSessionToken, verifySessionToken } from "./session";
 import type { SessionUser } from "./session";
 
-const SESSION_COOKIE = "taktis_tsj_session";
+const SESSION_COOKIE = "taktis_branding_session";
 
 export async function createServerSupabase() {
   return createServerClient();

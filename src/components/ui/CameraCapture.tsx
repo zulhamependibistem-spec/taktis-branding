@@ -68,7 +68,7 @@ export default function CameraCapture({
     // Reset transform so text timestamp overlay is NOT mirrored
     ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-    const stamp = `${label} · TAKTIS TSJ · ${new Date().toLocaleString("en-GB", {
+    const stamp = `${label} · TAKTIS Branding · ${new Date().toLocaleString("en-GB", {
       timeZone: "Asia/Jakarta",
       day: "2-digit",
       month: "2-digit",

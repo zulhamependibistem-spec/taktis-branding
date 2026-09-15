@@ -1,5 +1,5 @@
 /* Minimal SW: cache-first untuk aset statis, network-first untuk navigasi. */
-const CACHE = "taktis-tsj-v1";
+const CACHE = "taktis-branding-v1";
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE));
