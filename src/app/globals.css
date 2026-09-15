@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+
+  --z-nav: 40;
+  --z-overlay: 50;
+  --z-modal: 90;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
+:root {
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-out-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Admin/PIC portal (desktop-first): auto scale down so it feels native instead of zoomed.
+   FitPanel.js reads --admin-zoom to compensate viewport math for the exact screen fill. */
+:root {
+  --admin-zoom: 0.75;
+}
+
+@media (min-width: 1024px) {
+  .admin-shell {
+    zoom: var(--admin-zoom);
+  }
+}
+
+/* Global Buttery-Smooth Tactile Micro-Animations for all interactive UI elements */
+button,
+a,
+input[type="button"],
+input[type="submit"],
+.interactive-card {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:active,
+a:active,
+.interactive-card:active {
+  transform: scale(0.96);
+  transition-duration: 0.08s;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-indigo-500);
+  outline-offset: 2px;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.logo-spin {
+  animation: logo-spin 5s linear infinite;
+}
+
+body {
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}

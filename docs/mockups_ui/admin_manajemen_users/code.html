@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin User Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#d3e4fe",
+                        "on-background": "#0b1c30",
+                        "primary": "#3525cd",
+                        "surface-dim": "#cbdbf5",
+                        "outline-variant": "#c7c4d8",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "background": "#f8f9ff",
+                        "surface-container-high": "#dce9ff",
+                        "surface-tint": "#4d44e3",
+                        "tertiary-container": "#006e4b",
+                        "inverse-primary": "#c3c0ff",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "surface-variant": "#d3e4fe",
+                        "on-tertiary-fixed": "#002113",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "surface-container": "#e5eeff",
+                        "inverse-surface": "#213145",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#67f4b7",
+                        "secondary-container": "#dae2fd",
+                        "secondary": "#565e74",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface": "#f8f9ff",
+                        "outline": "#777587",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "primary-container": "#4f46e5",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "surface-bright": "#f8f9ff",
+                        "on-primary-container": "#dad7ff",
+                        "on-secondary-container": "#5c647a",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#0f0069",
+                        "tertiary-fixed": "#6ffbbe",
+                        "secondary-fixed": "#dae2fd",
+                        "on-surface": "#0b1c30",
+                        "on-surface-variant": "#464555",
+                        "tertiary": "#005338",
+                        "surface-container-low": "#eff4ff",
+                        "primary-fixed": "#e2dfff",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "gutter": "16px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "margin-mobile": "16px",
+                        "md": "16px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "margin-desktop": "48px"
+                    },
+                    "fontFamily": {
+                        "data-md": ["JetBrains Mono"],
+                        "data-lg": ["JetBrains Mono"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "data-md": ["14px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "data-lg": ["18px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden flex h-screen">
+<!-- SideNavBar (Shared Component) -->
+<nav class="w-[280px] h-screen fixed left-0 top-0 bg-surface-container-lowest dark:bg-surface-on-background border-r border-outline-variant dark:border-outline shadow-sm flex flex-col py-lg px-md z-40 hidden md:flex">
+<!-- Header -->
+<div class="mb-xl flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-headline-sm">
+                W
+            </div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary dark:text-primary-fixed">WOW JSM</h1>
+<p class="font-body-md text-on-surface-variant text-xs">Admin Management</p>
+</div>
+</div>
+<!-- Main Navigation Tabs -->
+<div class="flex flex-col gap-sm flex-grow">
+<!-- Inactive Tab -->
+<div class="flex items-center gap-md py-sm px-md rounded-xl text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</div>
+<!-- Active Tab (Users) -->
+<div class="flex items-center gap-md py-sm px-md rounded-xl text-primary dark:text-primary-fixed font-bold border-r-4 border-primary dark:border-primary-fixed bg-surface-container-low cursor-pointer active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="group" data-weight="fill" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-body-md text-body-md">Users</span>
+</div>
+<!-- Inactive Tab -->
+<div class="flex items-center gap-md py-sm px-md rounded-xl text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-body-md text-body-md">Outlets</span>
+</div>
+<!-- Inactive Tab -->
+<div class="flex items-center gap-md py-sm px-md rounded-xl text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-body-md text-body-md">Pricing</span>
+</div>
+</div>
+<!-- Footer Tabs -->
+<div class="flex flex-col gap-sm mt-auto pt-md border-t border-outline-variant">
+<div class="flex items-center gap-md py-sm px-md rounded-xl text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</div>
+<div class="flex items-center gap-md py-sm px-md rounded-xl text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md text-body-md">Logout</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 ml-0 md:ml-[280px] bg-[#f8fafc] h-screen overflow-y-auto relative p-margin-mobile md:p-margin-desktop">
+<!-- Header -->
+<div class="flex justify-between items-center mb-lg">
+<h2 class="font-headline-sm text-[20px] font-bold text-on-surface">Manajemen Users</h2>
+<button class="bg-primary text-on-primary font-bold rounded-xl py-sm px-lg hover:bg-primary-container transition-colors active:scale-95 flex items-center gap-sm">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                Tambah User
+            </button>
+</div>
+<!-- Filter Bar -->
+<div class="flex flex-wrap gap-md mb-xl">
+<!-- Search -->
+<div class="relative flex-1 min-w-[200px]">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full h-[48px] pl-10 pr-4 rounded-xl border border-slate-200 bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary-container/20 text-body-md placeholder:text-outline outline-none transition-all" placeholder="Cari NIP atau Nama..." type="text"/>
+</div>
+<!-- Role Filter -->
+<div class="relative min-w-[160px]">
+<select class="w-full h-[48px] px-md rounded-xl border border-slate-200 bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary-container/20 text-body-md appearance-none outline-none cursor-pointer">
+<option>Semua Role</option>
+<option>SPG</option>
+<option>TL</option>
+<option>Admin</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+</div>
+<!-- Status Filter -->
+<div class="relative min-w-[160px]">
+<select class="w-full h-[48px] px-md rounded-xl border border-slate-200 bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary-container/20 text-body-md appearance-none outline-none cursor-pointer">
+<option>Semua Status</option>
+<option>Active</option>
+<option>Inactive</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Data Table Card -->
+<div class="bg-surface-container-lowest rounded-2xl border border-[#e2e8f0] shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-[#e2e8f0]">
+<th class="py-md px-md font-label-sm text-on-surface-variant uppercase tracking-wider">NIP</th>
+<th class="py-md px-md font-label-sm text-on-surface-variant uppercase tracking-wider">Nama</th>
+<th class="py-md px-md font-label-sm text-on-surface-variant uppercase tracking-wider">No. HP</th>
+<th class="py-md px-md font-label-sm text-on-surface-variant uppercase tracking-wider">Role</th>
+<th class="py-md px-md font-label-sm text-on-surface-variant uppercase tracking-wider">Outlet</th>
+<th class="py-md px-md font-label-sm text-on-surface-variant uppercase tracking-wider">TL</th>
+<th class="py-md px-md font-label-sm text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="py-md px-md font-label-sm text-on-surface-variant uppercase tracking-wider text-center">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#e2e8f0]">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-lowest/50 transition-colors">
+<td class="py-sm px-md font-data-md text-on-surface">20140</td>
+<td class="py-sm px-md font-body-md text-on-surface font-medium">Sarah Jenkins</td>
+<td class="py-sm px-md font-data-md text-on-surface-variant">0812345678</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-indigo-100 text-indigo-700 font-label-sm text-[10px]">SPG</span>
+</td>
+<td class="py-sm px-md font-body-md text-on-surface-variant">KAIRO</td>
+<td class="py-sm px-md font-body-md text-on-surface-variant">Andi Pratama</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 font-label-sm text-[10px]">Active</span>
+</td>
+<td class="py-sm px-md text-center">
+<button class="p-1 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors ml-1" title="Deactivate">
+<span class="material-symbols-outlined text-[18px]">person_off</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-lowest/50 transition-colors">
+<td class="py-sm px-md font-data-md text-on-surface">20139</td>
+<td class="py-sm px-md font-body-md text-on-surface font-medium">Andi Pratama</td>
+<td class="py-sm px-md font-data-md text-on-surface-variant">0812998877</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-violet-100 text-violet-700 font-label-sm text-[10px]">TL</span>
+</td>
+<td class="py-sm px-md font-body-md text-on-surface-variant text-center">-</td>
+<td class="py-sm px-md font-body-md text-on-surface-variant text-center">-</td>
+<td class="py-sm px-md">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-300 font-label-sm text-[10px]">Active</span>
+</td>
+<td class="py-sm px-md text-center">
+<button class="p-1 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors ml-1" title="Deactivate">
+<span class="material-symbols-outlined text-[18px]">person_off</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Slide-over Panel (Tambah User) -->
+<!-- Note: Added 'translate-x-0' to make it visible for the static mockup. In a real app, this would be toggled. -->
+<div class="fixed inset-y-0 right-0 w-[400px] glass-panel border-l border-slate-100 shadow-2xl z-50 flex flex-col transform transition-transform duration-300 translate-x-0">
+<!-- Panel Header -->
+<div class="px-lg py-md border-b border-[#e2e8f0] flex justify-between items-center">
+<h3 class="font-headline-sm text-[18px] font-bold text-on-surface">Tambah User</h3>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors rounded-full p-1 hover:bg-surface-container">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Panel Body (Form) -->
+<div class="flex-1 overflow-y-auto p-lg flex flex-col gap-md">
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-on-surface-variant">Nama</label>
+<input class="w-full h-[48px] px-3 rounded-xl border border-slate-200 bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary-container/20 text-body-md outline-none transition-all" placeholder="Masukkan nama lengkap" type="text"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-on-surface-variant">NIP</label>
+<input class="w-full h-[48px] px-3 rounded-xl border border-slate-200 bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary-container/20 font-data-md outline-none transition-all" placeholder="Mis: 20145" type="text"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-on-surface-variant">No. HP</label>
+<input class="w-full h-[48px] px-3 rounded-xl border border-slate-200 bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary-container/20 font-data-md outline-none transition-all" placeholder="Mis: 0812..." type="tel"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-on-surface-variant">Role</label>
+<div class="relative">
+<select class="w-full h-[48px] px-3 rounded-xl border border-slate-200 bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary-container/20 text-body-md appearance-none outline-none cursor-pointer">
+<option disabled="" selected="" value="">Pilih Role</option>
+<option>SPG</option>
+<option>TL</option>
+<option>Admin</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-on-surface-variant">Outlet (Opsional)</label>
+<div class="relative">
+<select class="w-full h-[48px] px-3 rounded-xl border border-slate-200 bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary-container/20 text-body-md appearance-none outline-none cursor-pointer">
+<option disabled="" selected="" value="">Pilih Outlet</option>
+<option>KAIRO</option>
+<option>PARIS</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-sm text-on-surface-variant">TL (Opsional)</label>
+<div class="relative">
+<select class="w-full h-[48px] px-3 rounded-xl border border-slate-200 bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary-container/20 text-body-md appearance-none outline-none cursor-pointer">
+<option disabled="" selected="" value="">Pilih Team Leader</option>
+<option>Andi Pratama</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Panel Footer -->
+<div class="p-lg border-t border-[#e2e8f0] bg-surface-container-lowest/50">
+<button class="w-full bg-primary text-on-primary font-bold rounded-xl py-[12px] hover:bg-primary-container transition-colors active:scale-95 text-body-md">
+                    Simpan
+                </button>
+</div>
+</div>
+</main>
+</body></html>

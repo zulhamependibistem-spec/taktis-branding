@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Master Product &amp; Pricing - WOW JSM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#d3e4fe",
+                      "primary-container": "#4f46e5",
+                      "on-secondary": "#ffffff",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "error": "#ba1a1a",
+                      "surface-variant": "#d3e4fe",
+                      "on-background": "#0b1c30",
+                      "tertiary-container": "#006e4b",
+                      "on-primary-container": "#dad7ff",
+                      "outline": "#777587",
+                      "inverse-surface": "#213145",
+                      "tertiary-fixed": "#6ffbbe",
+                      "surface-container-low": "#eff4ff",
+                      "secondary-fixed": "#dae2fd",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "primary": "#3525cd",
+                      "tertiary": "#005338",
+                      "on-surface-variant": "#464555",
+                      "on-primary-fixed": "#0f0069",
+                      "outline-variant": "#c7c4d8",
+                      "on-error-container": "#93000a",
+                      "primary-fixed": "#e2dfff",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "surface-tint": "#4d44e3",
+                      "on-tertiary-fixed": "#002113",
+                      "on-tertiary-container": "#67f4b7",
+                      "surface-container-high": "#dce9ff",
+                      "on-secondary-container": "#5c647a",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "inverse-primary": "#c3c0ff",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-container": "#dae2fd",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "surface-dim": "#cbdbf5",
+                      "on-surface": "#0b1c30",
+                      "background": "#f8f9ff",
+                      "surface-container": "#e5eeff",
+                      "surface": "#f8f9ff",
+                      "on-error": "#ffffff",
+                      "surface-bright": "#f8f9ff",
+                      "on-secondary-fixed": "#131b2e",
+                      "secondary": "#565e74",
+                      "on-primary-fixed-variant": "#3323cc",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-tertiary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "margin-desktop": "48px",
+                      "gutter": "16px",
+                      "xl": "32px",
+                      "md": "16px",
+                      "sm": "8px",
+                      "margin-mobile": "16px",
+                      "lg": "24px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-sm": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-sm": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "data-md": [
+                              "JetBrains Mono"
+                      ],
+                      "data-lg": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "data-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .table-row-hover:hover {
+            background-color: theme('colors.surface-container-highest');
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="hidden md:flex bg-surface-container-low dark:bg-inverse-surface shadow-sm fixed left-0 top-0 h-full w-[280px] z-50 flex-col p-md gap-sm border-r border-outline-variant/20">
+<div class="flex items-center gap-sm px-sm py-md mb-md">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary font-bold">W</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-extrabold tracking-tight text-primary dark:text-primary-fixed">WOW JSM</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Field Ops Admin</p>
+</div>
+</div>
+<ul class="flex flex-col gap-xs flex-1">
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl font-label-sm text-label-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl font-label-sm text-label-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Users</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl font-label-sm text-label-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span>Outlets</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-xl font-bold font-label-sm text-label-sm scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span>Product &amp; Pricing</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl font-label-sm text-label-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="swap_vert">swap_vert</span>
+<span>Import/Export</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl font-label-sm text-label-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface rounded-xl font-label-sm text-label-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 md:ml-[280px] flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface/80 backdrop-blur-md dark:bg-surface-dim/80 w-full h-16 sticky top-0 z-40 border-b border-outline-variant/30 flex justify-between items-center px-lg">
+<div class="flex items-center gap-sm text-on-surface-variant font-body-md text-body-md">
+<span>Admin</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-primary font-medium">Produk &amp; Harga</span>
+</div>
+<div class="flex items-center gap-md text-primary dark:text-primary-fixed">
+<button class="hover:text-primary transition-colors duration-200 p-sm rounded-full hover:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:text-primary transition-colors duration-200 p-sm rounded-full hover:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold ml-sm cursor-pointer border border-outline-variant/50">
+                    A
+                </div>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex-1 p-lg md:p-margin-desktop overflow-auto">
+<!-- Header & Actions -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-xl gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-background mb-xs">Master Product &amp; Pricing</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage base SKUs and outlet-specific price overrides.</p>
+</div>
+<button class="bg-primary-container text-on-secondary font-label-sm text-label-sm px-6 py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center gap-sm shadow-sm">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                    Tambah Produk
+                </button>
+</div>
+<!-- Filters & Search -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-md mb-lg shadow-sm flex flex-col md:flex-row gap-md items-center">
+<div class="relative flex-1 w-full">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full h-12 pl-10 pr-4 rounded-xl border border-outline-variant/50 bg-surface-container-lowest focus:border-primary focus:ring-2 focus:ring-primary-container/20 text-body-md font-body-md transition-all" placeholder="Search by product name or SKU..." type="text"/>
+</div>
+<div class="flex gap-sm w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
+<button class="px-4 py-2 rounded-xl bg-primary-container text-on-primary-container font-label-sm text-label-sm whitespace-nowrap">All Categories</button>
+<button class="px-4 py-2 rounded-xl bg-surface border border-outline-variant/50 text-on-surface-variant font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-highest transition-colors">Noodle Cup</button>
+<button class="px-4 py-2 rounded-xl bg-surface border border-outline-variant/50 text-on-surface-variant font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-highest transition-colors">Beverage</button>
+<button class="px-4 py-2 rounded-xl bg-surface border border-outline-variant/50 text-on-surface-variant font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-container-highest transition-colors">Snack</button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-sm overflow-hidden flex flex-col md:flex-row h-[600px]">
+<!-- Table Section -->
+<div class="flex-1 overflow-auto border-r border-outline-variant/30">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low sticky top-0 z-10 border-b border-outline-variant/30">
+<tr>
+<th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-semibold">Product Info</th>
+<th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-semibold">Category</th>
+<th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-semibold text-right">Base SKU Price</th>
+<th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-semibold text-center">Status</th>
+<th class="p-4 font-label-sm text-label-sm text-on-surface-variant font-semibold text-center">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md divide-y divide-outline-variant/20">
+<!-- Row 1 -->
+<tr class="table-row-hover transition-colors cursor-pointer bg-surface-container-highest/30">
+<td class="p-4 flex items-center gap-sm">
+<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant/30 bg-surface" data-alt="A small square thumbnail image showing a generic instant noodle cup packaging with bright red and yellow colors, placed against a clean white background in bright studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzu9ZGe4I6MaubyHhmB5zGoMr0H7HS509cAEJOQ6Cn_MZWbHpq0fqwps_fX2_fwssvA6EQ4oGU74Pu7hiNJMkOdDfmLAEd_k0MUBM0h88D6sEYDV7CTnWiXHDrrOmkuwimPBq8v5b5DLja6AnrO1Alllc3Mm6wahApzbSv9G3TUke07-QzUOWkZGi12ikvwiXtYn6WUrtx7FJrY3urHjMFP6eFcps9pw_x4vBQ1EXqEqca7gbn_zNo"/>
+<div>
+<div class="font-semibold text-on-background">Super Noodle Cup Premium</div>
+<div class="text-xs text-outline font-data-md">SKU: NDL-CUP-001</div>
+</div>
+</td>
+<td class="p-4 text-on-surface-variant">Noodle Cup</td>
+<td class="p-4 text-right font-data-md text-data-md text-on-background">Rp 12,500</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-tertiary-container/20 text-tertiary-container font-label-sm text-[10px]">Active</span>
+</td>
+<td class="p-4 text-center">
+<button class="p-2 text-outline hover:text-primary transition-colors rounded-full hover:bg-surface"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="table-row-hover transition-colors cursor-pointer">
+<td class="p-4 flex items-center gap-sm">
+<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant/30 bg-surface" data-alt="A small square thumbnail image of a refreshing iced tea beverage in a clear plastic cup with a green lid, set against a pristine white studio background with soft reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz5hRQzzNOiR4D37B3lDGdzIdsqEbTbdIo2QGjsAsx6P_YR8EsXLxvuEP4zMBd08iszzek7-npjXoVHLXGKCs_QfVs5tWoWi-v_oLbrr5I-sA6aLtp9AQLwWxo5vFscJzIwDYQhvZpKxyAmfDhIlDjmLA5TRFvLcX2LxCIUexx7yddilbXUIcb-QFCorvL0PHEsyLJX8fO3KHhH9AZatCMKbskae70w12sSb6JBkx_N0KzoUk9uxsS"/>
+<div>
+<div class="font-semibold text-on-background">Fresh Jasmine Tea 500ml</div>
+<div class="text-xs text-outline font-data-md">SKU: BEV-TEA-042</div>
+</div>
+</td>
+<td class="p-4 text-on-surface-variant">Beverage</td>
+<td class="p-4 text-right font-data-md text-data-md text-on-background">Rp 8,000</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-tertiary-container/20 text-tertiary-container font-label-sm text-[10px]">Active</span>
+</td>
+<td class="p-4 text-center">
+<button class="p-2 text-outline hover:text-primary transition-colors rounded-full hover:bg-surface"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="table-row-hover transition-colors cursor-pointer">
+<td class="p-4 flex items-center gap-sm">
+<img class="w-12 h-12 rounded-lg object-cover border border-outline-variant/30 bg-surface" data-alt="A small square thumbnail image of a glossy metallic snack bag filled with potato chips, colored in electric blue and silver, floating slightly over a pure white background in clear lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFADnlMPoRV9DTSiDNv4xKg3Aq6yH3HCvInkwjf-dpc7awB2xmJcZNx9iLxgIAP2mkaiS0WQLPsZUf4zISK3cf6shq1cpdjidlcGldA9G0CzTSq9PvnE-InkRJN9heoyVT9O8q3It_l_6FMw9HLhE8E3OnLAOLZ9LypCYjnnFvqVia7xVTA0sAr7HVeW9tsqeGj2-TmVqGWC3q58YFDjs3SKVepMvZf4nxSno8K-UIW3uMhb0C6bvu"/>
+<div>
+<div class="font-semibold text-on-background">Spicy Potato Crunch</div>
+<div class="text-xs text-outline font-data-md">SKU: SNK-PTC-99X</div>
+</div>
+</td>
+<td class="p-4 text-on-surface-variant">Snack</td>
+<td class="p-4 text-right font-data-md text-data-md text-on-background">Rp 15,000</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center px-2 py-1 rounded-full bg-error/10 text-error font-label-sm text-[10px]">Inactive</span>
+</td>
+<td class="p-4 text-center">
+<button class="p-2 text-outline hover:text-primary transition-colors rounded-full hover:bg-surface"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Slide-over / Details Section (Active State) -->
+<div class="w-full md:w-[320px] lg:w-[400px] bg-surface-container-low flex flex-col h-full border-t md:border-t-0 border-outline-variant/30">
+<div class="p-md border-b border-outline-variant/30 bg-surface-container-lowest flex justify-between items-center sticky top-0">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-background">Pricing Overrides</h3>
+<p class="font-label-sm text-label-sm text-outline">Super Noodle Cup Premium</p>
+</div>
+<button class="p-2 text-outline hover:text-primary transition-colors rounded-full hover:bg-surface-container-low"><span class="material-symbols-outlined">close</span></button>
+</div>
+<div class="p-md flex-1 overflow-auto">
+<div class="bg-primary-container/10 border border-primary-container/20 rounded-xl p-md mb-md">
+<div class="text-xs text-primary font-bold mb-1 uppercase tracking-wider">Base Price</div>
+<div class="font-data-lg text-data-lg text-primary">Rp 12,500</div>
+</div>
+<div class="flex items-center justify-between mb-sm">
+<h4 class="font-label-sm text-label-sm text-on-surface-variant font-bold">OUTLET SPECIFIC</h4>
+<button class="text-primary font-label-sm text-label-sm flex items-center hover:underline"><span class="material-symbols-outlined text-[16px] mr-1">add</span>Add Override</button>
+</div>
+<ul class="flex flex-col gap-sm">
+<!-- Override Item 1 -->
+<li class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-sm flex justify-between items-center shadow-sm">
+<div>
+<div class="font-semibold text-on-background text-sm">Kairo Outlet Main</div>
+<div class="text-xs text-outline">Promo Zone A</div>
+</div>
+<div class="text-right">
+<div class="font-data-md text-data-md text-on-background">Rp 11,000</div>
+<div class="text-[10px] text-tertiary-container font-semibold">-12%</div>
+</div>
+</li>
+<!-- Override Item 2 -->
+<li class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-sm flex justify-between items-center shadow-sm">
+<div>
+<div class="font-semibold text-on-background text-sm">Metro Dept Store CBD</div>
+<div class="text-xs text-outline">Premium Zone</div>
+</div>
+<div class="text-right">
+<div class="font-data-md text-data-md text-on-background">Rp 14,000</div>
+<div class="text-[10px] text-error font-semibold">+12%</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="p-md border-t border-outline-variant/30 bg-surface-container-lowest mt-auto">
+<button class="w-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm px-4 py-2 rounded-xl hover:bg-secondary-fixed-dim transition-colors font-bold">
+                            Save Changes
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,1 @@
+export const TARGET_SPG_PER_DAY = 2_000_000;

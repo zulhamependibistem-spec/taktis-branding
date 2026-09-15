@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TL Rekap Performa SPG</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#4d44e3",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-fixed": "#dae2fd",
+                        "on-surface-variant": "#464555",
+                        "on-secondary-container": "#5c647a",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#4f46e5",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "surface-container-high": "#dce9ff",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "primary": "#3525cd",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-background": "#0b1c30",
+                        "tertiary": "#005338",
+                        "on-primary-container": "#dad7ff",
+                        "surface-container": "#e5eeff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "outline-variant": "#c7c4d8",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-fixed": "#131b2e",
+                        "background": "#f8f9ff",
+                        "on-surface": "#0b1c30",
+                        "primary-fixed": "#e2dfff",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-tertiary-fixed": "#002113",
+                        "inverse-surface": "#213145",
+                        "on-primary-fixed": "#0f0069",
+                        "surface-dim": "#cbdbf5",
+                        "surface": "#f8f9ff",
+                        "outline": "#777587",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#c3c0ff",
+                        "tertiary-container": "#006e4b",
+                        "secondary-container": "#dae2fd",
+                        "secondary": "#565e74",
+                        "on-tertiary-container": "#67f4b7",
+                        "surface-bright": "#f8f9ff",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#d3e4fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "margin-mobile": "16px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "margin-desktop": "48px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "data-lg": ["JetBrains Mono"],
+                        "data-md": ["JetBrains Mono"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "data-lg": ["18px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "data-md": ["14px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #f8fafc; /* requested background */
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+</head>
+<body class="text-on-surface mx-auto w-full max-w-[390px] min-h-screen relative pb-24 shadow-2xl bg-slate-50">
+<!-- Top App Bar -->
+<header class="glass-panel sticky top-0 z-50 flex justify-between items-center w-full px-md h-16 shadow-sm">
+<h1 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Performa SPG</h1>
+<div class="flex gap-sm">
+<button aria-label="Search" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+</button>
+<button aria-label="Notifications" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+</div>
+</header>
+<main class="px-margin-mobile pt-sm pb-xl space-y-lg">
+<!-- Period Filters -->
+<div class="flex gap-sm overflow-x-auto pb-sm snap-x scrollbar-hide -mx-margin-mobile px-margin-mobile">
+<button class="snap-start flex-none px-4 py-2 bg-primary text-on-primary rounded-xl font-label-sm text-label-sm shadow-[0_4px_6px_rgba(0,0,0,0.05)] whitespace-nowrap">
+                Hari Ini
+            </button>
+<button class="snap-start flex-none px-4 py-2 bg-surface-container-lowest text-on-surface-variant border border-outline-variant/30 rounded-xl font-label-sm text-label-sm shadow-[0_1px_3px_rgba(0,0,0,0.04)] whitespace-nowrap">
+                Minggu Ini
+            </button>
+<button class="snap-start flex-none px-4 py-2 bg-surface-container-lowest text-on-surface-variant border border-outline-variant/30 rounded-xl font-label-sm text-label-sm shadow-[0_1px_3px_rgba(0,0,0,0.04)] whitespace-nowrap">
+                Bulan Ini
+            </button>
+</div>
+<!-- Summary Widget -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-outline-variant/30 flex justify-between items-center">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-xs">Total Omzet Tim (Hari Ini)</p>
+<p class="font-data-lg text-data-lg text-primary">Rp 14.500.000</p>
+</div>
+<div class="w-12 h-12 bg-surface-container-low rounded-xl flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-weight="fill">trending_up</span>
+</div>
+</div>
+<!-- SPG List -->
+<div class="space-y-sm">
+<!-- Card 1 (Top Performer) -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-outline-variant/30">
+<div class="flex items-center gap-sm mb-sm">
+<img class="w-10 h-10 rounded-lg object-cover border border-outline-variant/30" data-alt="A professional headshot of a young woman with a neat ponytail, wearing a corporate polo shirt, lit softly by modern indoor lighting against a neutral light grey background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl8xflqpkhyLkLmiiNb5LzfM6Ap9l2-iiitF5igtXBIyVYH5FmFiu86MJInUDZabc6ooaqZqsf_D6NFaUpknLGpurzf6JRmbokGLCFbET4XXb7aZY3iDGB0jSA2O3L0EscwZbNhFbE_kAbytWZlvtw9nwh_Km0sNUvrAoWLpiPr7v4tgs63HhHPb5Xy_xaK-07aiWlrAsb8P5rNnsaVCQ9SujYe6EYplP1vdiUDzAoMJj35_Rhhlc6"/>
+<div class="flex-1">
+<h3 class="font-body-md text-body-md font-bold text-on-surface">Sarah Wijaya</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Toko Makmur Jaya</p>
+</div>
+<span class="material-symbols-outlined text-tertiary">star</span>
+</div>
+<div class="flex flex-wrap gap-xs mb-md">
+<div class="bg-indigo-50 text-primary-container px-2 py-1 rounded-full font-label-sm text-label-sm">
+                        Omzet Rp 4.2jt
+                    </div>
+<div class="bg-slate-100 text-on-surface-variant px-2 py-1 rounded-full font-label-sm text-label-sm">
+                        32 Laporan
+                    </div>
+<div class="bg-surface-container text-on-surface-variant px-2 py-1 rounded-full font-label-sm text-label-sm">
+                        0 Ditolak
+                    </div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant mb-xs">
+<span>Progress Harian</span>
+<span class="text-primary font-bold">105%</span>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary-fixed-dim h-full rounded-full w-[100%]"></div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-xs text-right">Target Terlampaui</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-outline-variant/30">
+<div class="flex items-center gap-sm mb-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary font-bold text-headline-sm">A</div>
+<div class="flex-1">
+<h3 class="font-body-md text-body-md font-bold text-on-surface">Andi Pratama</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Sinar Abadi Mkt</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-md">
+<div class="bg-indigo-50 text-primary-container px-2 py-1 rounded-full font-label-sm text-label-sm">
+                        Omzet Rp 3.8jt
+                    </div>
+<div class="bg-slate-100 text-on-surface-variant px-2 py-1 rounded-full font-label-sm text-label-sm">
+                        28 Laporan
+                    </div>
+<div class="bg-rose-50 text-error px-2 py-1 rounded-full font-label-sm text-label-sm">
+                        2 Ditolak
+                    </div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant mb-xs">
+<span>Progress Harian</span>
+<span class="text-on-surface font-bold">85%</span>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[85%]"></div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-xs text-right">85% dari target harian</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-outline-variant/30 opacity-80">
+<div class="flex items-center gap-sm mb-sm">
+<img class="w-10 h-10 rounded-lg object-cover border border-outline-variant/30" data-alt="A portrait of a young man with neat short hair, wearing a dark blue company uniform, against a bright, airy office background with subtle depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIro35k65dEtnN3lrHKRvs_oM6dEA64n0baHKH_o-1YOL4e1yWt2guhY15iAEBxHpdkuYzOJ8kJv0KRLRB7WWRoWI8q5j2Lzftst8Eb2pOM-ASTc89ygsrkQcsorNTmbGqIHxKz6LQtYgsPhVMu_jaAH1gjz4Jr1ZYcV3N-I6t842QCzaCEFLZio7_LWumftxN_k0jd_z2WGfnqTJOecZGheBJ7_xkOwebMZA4aCOtAuOSP1QkOLkm"/>
+<div class="flex-1">
+<h3 class="font-body-md text-body-md font-bold text-on-surface">Budi Santoso</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Mega Dept Store</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-md">
+<div class="bg-indigo-50 text-primary-container px-2 py-1 rounded-full font-label-sm text-label-sm">
+                        Omzet Rp 1.2jt
+                    </div>
+<div class="bg-slate-100 text-on-surface-variant px-2 py-1 rounded-full font-label-sm text-label-sm">
+                        12 Laporan
+                    </div>
+<div class="bg-rose-50 text-error px-2 py-1 rounded-full font-label-sm text-label-sm">
+                        1 Ditolak
+                    </div>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant mb-xs">
+<span>Progress Harian</span>
+<span class="text-on-surface font-bold">62%</span>
+</div>
+<div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full w-[62%]"></div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-xs text-right">62% dari target harian</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-xl shadow-lg fixed bottom-0 left-0 w-full flex justify-around items-center px-sm pb-4 pt-2 z-50 border-t border-outline-variant/20">
+<button class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/50 active:scale-90 transition-transform rounded-xl px-4 py-1.5 w-16">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-label-sm text-label-sm-mobile">Beranda</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1.5 hover:bg-secondary-container/50 active:scale-90 transition-transform w-20">
+<span class="material-symbols-outlined mb-1" data-weight="fill">assignment</span>
+<span class="font-label-sm text-label-sm-mobile font-bold">Aktivitas</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/50 active:scale-90 transition-transform rounded-xl px-4 py-1.5 w-16">
+<span class="material-symbols-outlined mb-1">history</span>
+<span class="font-label-sm text-label-sm-mobile">Riwayat</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/50 active:scale-90 transition-transform rounded-xl px-4 py-1.5 w-16">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-sm text-label-sm-mobile">Profil</span>
+</button>
+</nav>
+</body></html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TL Set Harga SKU per Outlet</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#4d44e3",
+                      "error": "#ba1a1a",
+                      "error-container": "#ffdad6",
+                      "surface-container-low": "#eff4ff",
+                      "secondary-fixed": "#dae2fd",
+                      "on-surface-variant": "#464555",
+                      "on-secondary-container": "#5c647a",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#4f46e5",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "surface-container-high": "#dce9ff",
+                      "on-primary-fixed-variant": "#3323cc",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "primary": "#3525cd",
+                      "tertiary-fixed": "#6ffbbe",
+                      "on-background": "#0b1c30",
+                      "tertiary": "#005338",
+                      "on-primary-container": "#dad7ff",
+                      "surface-container": "#e5eeff",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-primary": "#ffffff",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "outline-variant": "#c7c4d8",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-secondary-fixed": "#131b2e",
+                      "background": "#f8f9ff",
+                      "on-surface": "#0b1c30",
+                      "primary-fixed": "#e2dfff",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "on-tertiary-fixed": "#002113",
+                      "inverse-surface": "#213145",
+                      "on-primary-fixed": "#0f0069",
+                      "surface-dim": "#cbdbf5",
+                      "surface": "#f8f9ff",
+                      "outline": "#777587",
+                      "on-tertiary": "#ffffff",
+                      "inverse-primary": "#c3c0ff",
+                      "tertiary-container": "#006e4b",
+                      "secondary-container": "#dae2fd",
+                      "secondary": "#565e74",
+                      "on-tertiary-container": "#67f4b7",
+                      "surface-bright": "#f8f9ff",
+                      "on-error": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "surface-variant": "#d3e4fe"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "margin-mobile": "16px",
+                      "sm": "8px",
+                      "base": "4px",
+                      "xs": "4px",
+                      "margin-desktop": "48px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-sm": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "data-lg": [
+                              "JetBrains Mono"
+                      ],
+                      "data-md": [
+                              "JetBrains Mono"
+                      ],
+                      "label-sm": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-[#f8fafc] text-on-surface font-body-md antialiased min-h-screen flex justify-center">
+<div class="w-[390px] h-[844px] bg-background relative flex flex-col overflow-hidden shadow-2xl">
+<!-- Header -->
+<header class="flex justify-between items-center w-full px-md h-16 bg-surface/80 backdrop-blur-xl sticky top-0 z-50 border-b border-outline-variant/30 shadow-sm">
+<button class="text-on-surface-variant hover:bg-primary/10 transition-colors p-sm rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-primary tracking-tight font-bold">Harga SKU</h1>
+<div class="w-10"></div> <!-- Placeholder for balance -->
+</header>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto p-md flex flex-col gap-md pb-[100px]">
+<!-- Outlet Selector -->
+<div class="relative w-full">
+<label class="sr-only" for="outlet-select">Pilih Outlet</label>
+<div class="relative">
+<select class="w-full h-[48px] rounded-xl border border-slate-200 bg-surface-container-lowest text-on-surface px-md py-sm appearance-none focus:border-primary-container focus:ring-2 focus:ring-secondary-container transition-all font-body-md" id="outlet-select">
+<option disabled="" selected="" value="">Pilih Outlet...</option>
+<option value="1">Outlet Sudirman - Jkt</option>
+<option value="2">Outlet Kemang - Jkt</option>
+<option value="3">Outlet Blok M - Jkt</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+<!-- SKU List -->
+<div class="flex flex-col gap-sm">
+<!-- SKU Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl border border-slate-200 p-md flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)] cursor-pointer hover:shadow-[0_4px_6px_rgba(0,0,0,0.05)] transition-shadow">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Noodle Cup</span>
+<span class="font-body-md text-body-md font-bold text-on-surface">CARBONARA</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-data-md text-data-md font-bold text-primary-container">Rp 5.500</span>
+<button class="text-outline hover:text-primary transition-colors flex items-center justify-center p-1 rounded-full">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+<!-- SKU Card 2 (Inline Edit Mode) -->
+<div class="bg-surface-container-lowest rounded-xl border border-primary-container shadow-[0_4px_6px_rgba(0,0,0,0.05)] p-md flex flex-col gap-sm transition-all relative overflow-hidden">
+<div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+<div class="flex justify-between items-start relative z-10">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Noodle Cup</span>
+<span class="font-body-md text-body-md font-bold text-on-surface">SPICY RAMEN</span>
+</div>
+</div>
+<div class="relative z-10 flex items-center mt-sm">
+<span class="absolute left-md font-data-md text-data-md text-on-surface-variant">Rp</span>
+<input class="w-full h-[48px] rounded-xl border border-primary-container bg-surface-container-lowest font-data-md text-data-md font-bold text-primary pl-[48px] pr-md focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" type="tel" value="6000"/>
+<button class="absolute right-sm bg-primary-container text-on-primary-container p-sm rounded-lg flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="check">check</span>
+</button>
+</div>
+</div>
+<!-- SKU Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl border border-slate-200 p-md flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)] cursor-pointer hover:shadow-[0_4px_6px_rgba(0,0,0,0.05)] transition-shadow">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Beverage</span>
+<span class="font-body-md text-body-md font-bold text-on-surface">ICED MATCHA</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-data-md text-data-md font-bold text-primary-container">Rp 12.000</span>
+<button class="text-outline hover:text-primary transition-colors flex items-center justify-center p-1 rounded-full">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+<!-- SKU Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl border border-slate-200 p-md flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)] cursor-pointer hover:shadow-[0_4px_6px_rgba(0,0,0,0.05)] transition-shadow">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Snack</span>
+<span class="font-body-md text-body-md font-bold text-on-surface">POTATO CHIPS BBQ</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="font-data-md text-data-md font-bold text-primary-container">Rp 8.500</span>
+<button class="text-outline hover:text-primary transition-colors flex items-center justify-center p-1 rounded-full">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Action Bar -->
+<div class="absolute bottom-0 w-full bg-surface-container-lowest/90 backdrop-blur-lg border-t border-slate-200 p-md shadow-[0_-4px_6px_rgba(0,0,0,0.05)] z-40">
+<button class="w-full bg-primary-container text-on-primary-container font-body-md text-body-md font-bold rounded-xl py-[12px] px-[24px] shadow-sm hover:bg-primary transition-colors active:scale-[0.98] flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+                Simpan Semua
+            </button>
+</div>
+</div>
+</body></html>

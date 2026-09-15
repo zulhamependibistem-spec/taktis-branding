@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TL Dashboard — Monitoring Absensi</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config injected by developer prompt -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#4d44e3",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-fixed": "#dae2fd",
+                        "on-surface-variant": "#464555",
+                        "on-secondary-container": "#5c647a",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#4f46e5",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "surface-container-high": "#dce9ff",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "primary": "#3525cd",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-background": "#0b1c30",
+                        "tertiary": "#005338",
+                        "on-primary-container": "#dad7ff",
+                        "surface-container": "#e5eeff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "outline-variant": "#c7c4d8",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-secondary-fixed": "#131b2e",
+                        "background": "#f8f9ff",
+                        "on-surface": "#0b1c30",
+                        "primary-fixed": "#e2dfff",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-tertiary-fixed": "#002113",
+                        "inverse-surface": "#213145",
+                        "on-primary-fixed": "#0f0069",
+                        "surface-dim": "#cbdbf5",
+                        "surface": "#f8f9ff",
+                        "outline": "#777587",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#c3c0ff",
+                        "tertiary-container": "#006e4b",
+                        "secondary-container": "#dae2fd",
+                        "secondary": "#565e74",
+                        "on-tertiary-container": "#67f4b7",
+                        "surface-bright": "#f8f9ff",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#d3e4fe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "margin-mobile": "16px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "margin-desktop": "48px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "data-lg": ["JetBrains Mono"],
+                        "data-md": ["JetBrains Mono"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-sm": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "data-lg": ["18px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "data-md": ["14px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc; /* As requested, though background token is #f8f9ff */
+            /* Using standard light mode slate/slate equivalent colors from instructions where specific tokens aren't forced by JSON */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="text-on-background bg-[#f8fafc] w-full max-w-[390px] min-h-[844px] mx-auto overflow-x-hidden relative shadow-2xl">
+<!-- TopAppBar -->
+<header class="bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-xl docked full-width top-0 sticky z-50 border-b border-outline-variant/30 shadow-sm flex justify-between items-center w-full px-md h-16">
+<div>
+<h1 class="font-headline-sm text-headline-sm text-primary dark:text-inverse-primary">Dashboard TL</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">28 Agustus 2026 · 12 SPG binaan</p>
+</div>
+<div class="flex gap-sm">
+<button class="text-on-surface-variant dark:text-outline-variant hover:bg-primary/10 transition-colors active:scale-95 duration-150 p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant dark:text-outline-variant hover:bg-primary/10 transition-colors active:scale-95 duration-150 p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="px-margin-mobile pt-sm pb-[100px] flex flex-col gap-md">
+<!-- Summary Stats Row -->
+<div class="flex gap-sm justify-between w-full">
+<div class="flex-1 bg-tertiary-container/10 text-tertiary rounded-lg p-2 flex flex-col items-center justify-center border border-tertiary-container/20">
+<span class="font-headline-sm text-headline-sm">8</span>
+<span class="font-label-sm text-label-sm">Hadir</span>
+</div>
+<div class="flex-1 bg-surface-variant text-on-surface-variant rounded-lg p-2 flex flex-col items-center justify-center border border-outline-variant/30">
+<span class="font-headline-sm text-headline-sm">2</span>
+<span class="font-label-sm text-label-sm">Belum</span>
+</div>
+<div class="flex-1 bg-error-container text-on-error-container rounded-lg p-2 flex flex-col items-center justify-center border border-error-container/50">
+<span class="font-headline-sm text-headline-sm">2</span>
+<span class="font-label-sm text-label-sm">GPS <span class="material-symbols-outlined text-[14px] align-middle">warning</span></span>
+</div>
+</div>
+<!-- SPG List (Bento-style list) -->
+<div class="flex flex-col gap-sm">
+<!-- SPG Card: On Time (Hadir) -->
+<div class="bg-surface-container-lowest border border-[#e2e8f0] rounded-xl p-md flex items-center shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_6px_rgba(0,0,0,0.05)] transition-shadow">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-body-md mr-md shrink-0">
+                    AN
+                </div>
+<div class="flex-1 min-w-0">
+<h3 class="font-body-md text-body-md font-bold truncate">Anita Nurhaliza</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Outlet JSM Mangga Dua</p>
+</div>
+<div class="ml-sm shrink-0 h-[24px] px-[10px] rounded-full bg-tertiary-container/10 text-tertiary font-label-sm text-label-sm flex items-center">
+                    Hadir
+                </div>
+</div>
+<!-- SPG Card: Location Unverified (GPS Warning) -->
+<div class="bg-surface-container-lowest border border-error-container/50 rounded-xl p-md flex items-center shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_6px_rgba(0,0,0,0.05)] transition-shadow relative overflow-hidden">
+<div class="absolute inset-0 bg-error-container/10 pointer-events-none"></div>
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-body-md mr-md shrink-0 relative z-10">
+                    BP
+                </div>
+<div class="flex-1 min-w-0 relative z-10">
+<h3 class="font-body-md text-body-md font-bold truncate">Budi Prakoso</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">JSM Supermall</p>
+</div>
+<div class="ml-sm shrink-0 h-[24px] px-[10px] rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm flex items-center gap-xs relative z-10">
+<span class="material-symbols-outlined text-[12px]" data-icon="location_off">location_off</span> GPS ⚠
+                </div>
+</div>
+<!-- SPG Card: On Time (Hadir) -->
+<div class="bg-surface-container-lowest border border-[#e2e8f0] rounded-xl p-md flex items-center shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_6px_rgba(0,0,0,0.05)] transition-shadow">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-body-md mr-md shrink-0">
+                    CD
+                </div>
+<div class="flex-1 min-w-0">
+<h3 class="font-body-md text-body-md font-bold truncate">Citra Dewi</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">JSM Blok M Plaza</p>
+</div>
+<div class="ml-sm shrink-0 h-[24px] px-[10px] rounded-full bg-tertiary-container/10 text-tertiary font-label-sm text-label-sm flex items-center">
+                    Hadir
+                </div>
+</div>
+<!-- SPG Card: Late (Amber/Warning substitute using secondary/outline colors as specific amber token missing, adapting based on style guide "Corporate Modern") -->
+<div class="bg-surface-container-lowest border border-[#e2e8f0] rounded-xl p-md flex items-center shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_6px_rgba(0,0,0,0.05)] transition-shadow">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-body-md mr-md shrink-0">
+                    DW
+                </div>
+<div class="flex-1 min-w-0">
+<h3 class="font-body-md text-body-md font-bold truncate">Dian Wulandari</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">JSM Senayan City</p>
+</div>
+<div class="ml-sm shrink-0 h-[24px] px-[10px] rounded-full bg-[#fef3c7] text-[#92400e] font-label-sm text-label-sm flex items-center">
+                    Terlambat
+                </div>
+</div>
+<!-- SPG Card: Not Checked In (Belum) -->
+<div class="bg-surface-container-lowest border border-[#e2e8f0] opacity-75 rounded-xl p-md flex items-center shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_6px_rgba(0,0,0,0.05)] transition-shadow">
+<div class="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-bold text-body-md mr-md shrink-0 border border-outline-variant/30">
+                    EK
+                </div>
+<div class="flex-1 min-w-0">
+<h3 class="font-body-md text-body-md font-bold text-on-surface-variant truncate">Eko Kurniawan</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant/70 truncate">JSM PIM 2</p>
+</div>
+<div class="ml-sm shrink-0 h-[24px] px-[10px] rounded-full bg-surface-variant text-on-surface-variant font-label-sm text-label-sm flex items-center">
+                    Belum
+                </div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-xl fixed bottom-0 w-full z-50 border-t border-outline-variant/20 shadow-lg fixed bottom-0 left-0 w-full flex justify-around items-center px-sm pb-4 pt-2">
+<!-- Active Tab: Beranda -->
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1.5 active:scale-90 transition-transform hover:bg-secondary-container/50">
+<span class="material-symbols-outlined" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm mt-1">Beranda</span>
+</button>
+<!-- Inactive Tab: Aktivitas -->
+<button class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/50 active:scale-90 transition-transform px-4 py-1.5 rounded-xl">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span class="font-label-sm text-label-sm mt-1">Aktivitas</span>
+</button>
+<!-- Inactive Tab: Riwayat -->
+<button class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/50 active:scale-90 transition-transform px-4 py-1.5 rounded-xl">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-sm text-label-sm mt-1">Riwayat</span>
+</button>
+<!-- Inactive Tab: Profil -->
+<button class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/50 active:scale-90 transition-transform px-4 py-1.5 rounded-xl">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profil</span>
+</button>
+</nav>
+</body></html>

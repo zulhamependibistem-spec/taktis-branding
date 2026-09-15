@@ -1,0 +1,124 @@
+erDiagram
+    OUTLETS {
+        uuid id PK
+        string code_subdist
+        string code_outlet
+        string name
+        string area
+        string grsm
+        string channel_group
+        numeric target_sellout_value
+        timestamptz created_at
+    }
+
+    PRODUCTS {
+        uuid id PK
+        string name
+        string variant
+        numeric default_price
+        boolean is_active
+    }
+
+    USERS {
+        uuid id PK
+        string full_name
+        string nip UK
+        string phone UK
+        string role
+        string status
+        uuid assigned_outlet_id FK
+        uuid supervisor_id FK
+        timestamptz created_at
+    }
+    %% role: spg / tl / admin
+    %% status: active / inactive
+    %% login: phone + nip (no OTP)
+    %% provisioning: only tl/admin can create spg accounts
+
+    ATTENDANCE {
+        uuid id PK
+        uuid user_id FK
+        uuid outlet_id FK
+        date report_date
+        timestamptz check_in_time
+        string check_in_photo_url
+        numeric check_in_lat
+        numeric check_in_lng
+        timestamptz check_out_time
+        string check_out_photo_url
+        string status
+        string location_bypass_reason
+    }
+    %% status: on_time / late / location_unverified
+    %% unique constraint: (user_id, outlet_id, report_date)
+    %% check_out_time can only be set if check_in_time is already filled
+    %% location_bypass_reason required if status = location_unverified
+
+    DAILY_SALES_REPORTS {
+        uuid id PK
+        uuid user_id FK
+        uuid outlet_id FK
+        uuid product_id FK
+        date report_date
+        integer qty_sold
+        numeric unit_price
+        numeric total_selling
+        integer sampling_qty
+        string status
+        uuid approved_by FK
+        timestamptz approved_at
+        string notes
+    }
+    %% unit_price: auto-filled from outlet_product_prices, fallback to products.default_price
+    %% total_selling: auto-calculated (qty_sold x unit_price)
+    %% status: pending / approved / rejected
+
+    DAILY_STOCK_REPORTS {
+        uuid id PK
+        uuid user_id FK
+        uuid outlet_id FK
+        uuid product_id FK
+        date report_date
+        integer stock_awal
+        integer stock_akhir
+        integer selisih
+        integer other_qty
+        string other_reason
+        string status
+        uuid approved_by FK
+        timestamptz approved_at
+    }
+    %% selisih: auto-calculated (stock_awal - stock_akhir)
+    %% other_qty: units not sold & not sampling (broken, lost, expired, return)
+    %% other_reason: required if other_qty > 0
+    %% status: pending / approved / rejected
+
+    OUTLET_PRODUCT_PRICES {
+        uuid id PK
+        uuid outlet_id FK
+        uuid product_id FK
+        numeric price
+        uuid set_by FK
+        timestamptz created_at
+    }
+    %% unique constraint: (outlet_id, product_id)
+    %% set_by: must be role tl or admin
+    %% if no row exists, fallback to products.default_price
+
+    OUTLETS ||--o{ USERS : "assigned_to"
+    OUTLETS ||--o{ ATTENDANCE : "location_of"
+    OUTLETS ||--o{ DAILY_SALES_REPORTS : "reported_at"
+    OUTLETS ||--o{ DAILY_STOCK_REPORTS : "reported_at"
+    OUTLETS ||--o{ OUTLET_PRODUCT_PRICES : "has_price_override"
+
+    PRODUCTS ||--o{ DAILY_SALES_REPORTS : "sold_in"
+    PRODUCTS ||--o{ DAILY_STOCK_REPORTS : "tracked_in"
+    PRODUCTS ||--o{ OUTLET_PRODUCT_PRICES : "priced_at"
+
+    USERS ||--o{ ATTENDANCE : "checks_in"
+    USERS ||--o{ DAILY_SALES_REPORTS : "submits"
+    USERS ||--o{ DAILY_STOCK_REPORTS : "submits"
+    USERS ||--o{ DAILY_SALES_REPORTS : "approves"
+    USERS ||--o{ DAILY_STOCK_REPORTS : "approves"
+    USERS ||--o{ OUTLET_PRODUCT_PRICES : "sets"
+    USERS ||--o{ USERS : "supervises"

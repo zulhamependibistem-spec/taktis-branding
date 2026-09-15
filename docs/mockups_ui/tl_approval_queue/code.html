@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Antrian Approval - WOW JSM</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#4d44e3",
+                      "error": "#ba1a1a",
+                      "error-container": "#ffdad6",
+                      "surface-container-low": "#eff4ff",
+                      "secondary-fixed": "#dae2fd",
+                      "on-surface-variant": "#464555",
+                      "on-secondary-container": "#5c647a",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#bec6e0",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#4f46e5",
+                      "tertiary-fixed-dim": "#4edea3",
+                      "surface-container-high": "#dce9ff",
+                      "on-primary-fixed-variant": "#3323cc",
+                      "on-tertiary-fixed-variant": "#005236",
+                      "primary": "#3525cd",
+                      "tertiary-fixed": "#6ffbbe",
+                      "on-background": "#0b1c30",
+                      "tertiary": "#005338",
+                      "on-primary-container": "#dad7ff",
+                      "surface-container": "#e5eeff",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-primary": "#ffffff",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "outline-variant": "#c7c4d8",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-secondary-fixed": "#131b2e",
+                      "background": "#f8f9ff",
+                      "on-surface": "#0b1c30",
+                      "primary-fixed": "#e2dfff",
+                      "on-secondary-fixed-variant": "#3f465c",
+                      "on-tertiary-fixed": "#002113",
+                      "inverse-surface": "#213145",
+                      "on-primary-fixed": "#0f0069",
+                      "surface-dim": "#cbdbf5",
+                      "surface": "#f8f9ff",
+                      "outline": "#777587",
+                      "on-tertiary": "#ffffff",
+                      "inverse-primary": "#c3c0ff",
+                      "tertiary-container": "#006e4b",
+                      "secondary-container": "#dae2fd",
+                      "secondary": "#565e74",
+                      "on-tertiary-container": "#67f4b7",
+                      "surface-bright": "#f8f9ff",
+                      "on-error": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "surface-variant": "#d3e4fe"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "margin-mobile": "16px",
+                      "sm": "8px",
+                      "base": "4px",
+                      "xs": "4px",
+                      "margin-desktop": "48px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-sm": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "data-lg": [
+                              "JetBrains Mono"
+                      ],
+                      "data-md": [
+                              "JetBrains Mono"
+                      ],
+                      "label-sm": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "data-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #f8fafc;
+            /* Target mobile size */
+            max-width: 390px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            /* padding-bottom for nav */
+            padding-bottom: 80px; 
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased">
+<!-- Header -->
+<header class="sticky top-0 z-40 bg-surface/80 backdrop-blur-md px-margin-mobile py-4 flex items-center justify-between border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<h1 class="font-headline-sm text-headline-sm text-on-surface">Antrian Approval</h1>
+<div class="bg-error text-on-error rounded-full w-6 h-6 flex items-center justify-center font-label-sm text-label-sm">3</div>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">more_vert</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="p-margin-mobile flex flex-col gap-lg">
+<!-- Filter Tabs -->
+<div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-4 py-2 rounded-xl bg-primary text-on-primary font-label-sm text-label-sm whitespace-nowrap shadow-sm">Semua</button>
+<button class="px-4 py-2 rounded-xl bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-variant transition-colors">Sales</button>
+<button class="px-4 py-2 rounded-xl bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-variant transition-colors">Stok</button>
+<button class="px-4 py-2 rounded-xl bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-variant transition-colors">Kehadiran</button>
+</div>
+<!-- Approval Cards Queue -->
+<div class="flex flex-col gap-4">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-md shadow-sm">
+<!-- Header -->
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-2">
+<span class="bg-primary-container text-primary font-label-sm text-label-sm px-2 py-1 rounded-full">SALES</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">28 Agu 14:30</span>
+</div>
+</div>
+<!-- Content -->
+<div class="mb-md">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close up portrait of a young professional Southeast Asian woman smiling warmly. Bright indoor lighting, corporate modern aesthetic, slate tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJbX1L9ZewJZRCkntuStoYSZnV-zFYDHkKyK_NY3RrpDNbLmqNihkbP2zfvnjRtWcMeK0-9S4SsCWmDgyt0tnVqgq_MxXOuYSrXn6B4IMZk-3KtbmnuKD6J6UqNyngkozjlXz6dulpqKyjR4v1sITkXSIXDHuwLXiieXNKhCoRlNRgXgcn9cVZOYAyX5LH_twyeESR_NpHjlXyj_2eEUhcEDEdI11ccB2voR8Z-RnF2qV8zweSpKSR"/>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface">Dian Sastrowardoyo</p>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">storefront</span>
+                                Outlet Indomaret Sudirman
+                            </p>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3">
+<p class="font-data-md text-data-md text-on-surface">4 SKU · Total Rp 756.000</p>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Catatan: Promosi weekend berjalan lancar, stok menipis.</p>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-2">
+<button class="flex-1 bg-error-container text-on-error-container font-label-sm text-label-sm py-2 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[18px]">close</span>
+                        Tolak
+                    </button>
+<button class="flex-1 bg-tertiary text-on-tertiary font-label-sm text-label-sm py-2 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[18px]">check</span>
+                        Setujui
+                    </button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-md shadow-sm">
+<!-- Header -->
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-2">
+<span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2 py-1 rounded-full">STOK</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">28 Agu 11:15</span>
+</div>
+</div>
+<!-- Content -->
+<div class="mb-md">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface">Budi Santoso</p>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">storefront</span>
+                                Alfamart Thamrin
+                            </p>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3">
+<p class="font-data-md text-data-md text-on-surface">Penyesuaian Stok: -12 Pcs</p>
+<p class="font-body-md text-body-md text-error mt-1">Alasan: Produk Expired</p>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-2">
+<button class="flex-1 bg-error-container text-on-error-container font-label-sm text-label-sm py-2 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[18px]">close</span>
+                        Tolak
+                    </button>
+<button class="flex-1 bg-tertiary text-on-tertiary font-label-sm text-label-sm py-2 rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[18px]">check</span>
+                        Setujui
+                    </button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-md shadow-sm opacity-60">
+<!-- Header -->
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-2">
+<span class="bg-primary-container text-primary font-label-sm text-label-sm px-2 py-1 rounded-full">SALES</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">27 Agu 18:00</span>
+</div>
+<span class="text-tertiary font-label-sm text-label-sm flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">check_circle</span>Disetujui</span>
+</div>
+<!-- Content -->
+<div class="mb-2">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover grayscale" data-alt="A close up portrait of a young professional Southeast Asian woman smiling warmly. Bright indoor lighting, corporate modern aesthetic, slate tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8VS3R2OnrLBCJ-k6EE9D0KiJGcP7x0Wo2lkH2-rgBGS4vpWFXAdNjRFdMPp5Tqlo9ne2tuLwuvxaeTYDOcsBSALxX9tDRLO7DgAkKLKrFiwIz5Hs8tyIVUl827s4vhCvhFeZrfVNlkBSAxxSUE2oFxztL38mC3Ob3AvKznZ8dinRJapB7m04ipDXg1w96Cu4ROCm-fyKaMxx_uKNlKWgSX6NrR9NZuREJwFUoRPok3zPSNQMzw7Lg"/>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface">Dian Sastrowardoyo</p>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">storefront</span>
+                                Outlet Indomaret Sudirman
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Component Implementation -->
+<nav class="bg-surface/80 dark:bg-inverse-surface/80 backdrop-blur-xl shadow-lg fixed bottom-0 left-0 w-full flex justify-around items-center px-sm pb-4 pt-2 border-t border-outline-variant/20 z-50 md:hidden">
+<!-- Tab 1: Beranda -->
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/50 active:scale-90 transition-transform p-2 rounded-xl group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">home</span>
+<span class="font-label-sm text-label-sm group-hover:text-primary transition-colors">Beranda</span>
+</a>
+<!-- Tab 2: Aktivitas (Active - Intent mapped to Approval Queue) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1.5 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">assignment</span>
+<span class="font-label-sm text-label-sm">Aktivitas</span>
+</a>
+<!-- Tab 3: Riwayat -->
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/50 active:scale-90 transition-transform p-2 rounded-xl group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">history</span>
+<span class="font-label-sm text-label-sm group-hover:text-primary transition-colors">Riwayat</span>
+</a>
+<!-- Tab 4: Profil -->
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/50 active:scale-90 transition-transform p-2 rounded-xl group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-primary transition-colors" style="font-variation-settings: 'FILL' 0;">person</span>
+<span class="font-label-sm text-label-sm group-hover:text-primary transition-colors">Profil</span>
+</a>
+</nav>
+</body></html>
