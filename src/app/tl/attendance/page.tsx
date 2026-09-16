@@ -21,7 +21,7 @@ export default async function TlAttendancePage() {
       </header>
       <main className="p-4">
         {res.success ? (
-          <AttendanceView rows={rows} showTl={false} />
+          <AttendanceView rows={rows} />
         ) : (
           <p className="rounded-xl border border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-400">
             {res.error}

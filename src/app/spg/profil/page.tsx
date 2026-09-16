@@ -68,7 +68,7 @@ export default async function ProfilPage() {
               <Icon name="person" size={22} />
             </div>
             <div>
-              <p className="text-[13px] text-slate-400">Team Leader / Supervisor</p>
+              <p className="text-[13px] text-slate-400">Admin / Supervisor</p>
               <p className="text-[16px] font-medium text-slate-900">
                 {supervisorName ?? "-"}
               </p>

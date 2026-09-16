@@ -60,7 +60,7 @@ export default async function SpgAbsenPage() {
         )}
         <CheckIn initial={attendance as never} userId={me.id} />
         <p className="text-center text-[12px] text-slate-400">
-          Verifikasi absensi ditangani Team Leader dari foto & timestamp Anda.
+          Verifikasi absensi ditangani Admin dari foto & timestamp Anda.
         </p>
       </main>
 

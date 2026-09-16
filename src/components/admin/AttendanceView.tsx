@@ -75,11 +75,9 @@ function PhotoCell({
 
 export default function AttendanceView({
   rows,
-  showTl,
   isAdmin = false,
 }: {
   rows: AttRow[];
-  showTl: boolean;
   isAdmin?: boolean;
 }) {
   const router = useRouter();
@@ -111,7 +109,7 @@ export default function AttendanceView({
     const list = filteredRows.map((r) => ({
       AREA: r.area || "-",
       ROLE: r.role.toUpperCase(),
-      "NAMA SPG/TL": r.name,
+      "NAMA SPG": r.name,
       NIP: r.nip || "-",
       "NAMA SUPERVISOR": r.tl,
       STATUS: r.status === "checked_out" ? "Check Out" : r.status === "checked_in" ? "Check In" : "Belum Absen",
@@ -285,7 +283,6 @@ export default function AttendanceView({
                   <p className="truncate text-[12px] text-slate-500">
                     {r.nip && <span className="mr-1.5 font-mono">{r.nip}</span>}
                     {r.area}
-                    {showTl && <span className="ml-1.5">· {r.role === "tl" ? "PIC" : "Team Leader"} {r.tl}</span>}
                   </p>
                 </div>
                 <div className="shrink-0 text-right">
