@@ -47,6 +47,8 @@ export default function ImportManager() {
       regional: T(r["REGIONAL"]),
       jabatan: T(r["JABATAN"] || r["ROLE"]),
       nama_toko: T(r["NAMA TOKO"] || r["OUTLET"]),
+      pic: T(r["PIC/ADMIN"] || r["PIC"]),
+      project: T(r["PROJECT"]),
       nama_tl: T(r["TEAM LEADER"] || r["TL"] || r["ATASAN"] || r["AT"] || r["SPV"]),
       status,
     };
@@ -61,6 +63,8 @@ export default function ImportManager() {
         AREA: "TASIK",
         REGIONAL: "JAWA BARAT",
         JABATAN: "SPG",
+        "PIC/ADMIN": "EKO/ERLITA",
+        PROJECT: "M2 TAKTIS TSJ",
         "NAMA TOKO": "KAIRO",
         "TEAM LEADER": "FAHMI LUKMANUL HAKIM",
       },
@@ -71,6 +75,8 @@ export default function ImportManager() {
         AREA: "TASIK",
         REGIONAL: "JAWA BARAT",
         JABATAN: "TL",
+        "PIC/ADMIN": "EKO/ERLITA",
+        PROJECT: "M2 TAKTIS TSJ",
         "NAMA TOKO": "",
         "TEAM LEADER": "",
       },
@@ -78,7 +84,7 @@ export default function ImportManager() {
 
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(templateData);
-    ws["!cols"] = [{ wch: 12 }, { wch: 28 }, { wch: 16 }, { wch: 14 }, { wch: 16 }, { wch: 12 }, { wch: 28 }, { wch: 28 }];
+    ws["!cols"] = [{ wch: 12 }, { wch: 28 }, { wch: 16 }, { wch: 14 }, { wch: 16 }, { wch: 12 }, { wch: 14 }, { wch: 20 }, { wch: 28 }, { wch: 28 }];
     XLSX.utils.book_append_sheet(wb, ws, "AKTIF");
 
     const out = XLSX.write(wb, { bookType: "xlsx", type: "array" });
@@ -156,6 +162,8 @@ export default function ImportManager() {
         regional: r.regional,
         jabatan: r.jabatan,
         nama_toko: r.nama_toko,
+        pic: r.pic,
+        project: r.project,
         nama_tl: r.nama_tl,
         status: r.status,
       })),

@@ -294,6 +294,8 @@ export type UserImportRow = {
   regional: string;
   jabatan: string;
   nama_toko: string;
+  pic?: string;
+  project?: string;
   nama_tl?: string;
   status?: "active" | "backup";
 };
@@ -315,7 +317,7 @@ export async function getUserImportPreview(rows: UserImportRow[]) {
   const supabase = createServerClient();
   const { data: existing } = await supabase
     .from("users")
-    .select("id, nip, full_name, role, status, phone, area, regional, jabatan, nama_toko");
+    .select("id, nip, full_name, role, status, phone, area, regional, jabatan, nama_toko, pic, project");
 
   type ExistingUser = {
     id: string;
@@ -328,6 +330,8 @@ export async function getUserImportPreview(rows: UserImportRow[]) {
     regional: string | null;
     jabatan: string | null;
     nama_toko: string | null;
+    pic: string | null;
+    project: string | null;
   };
 
   const byNip = new Map<string, ExistingUser>();
@@ -373,6 +377,10 @@ export async function getUserImportPreview(rows: UserImportRow[]) {
           changes.push(`Jabatan: ${cur.jabatan || "-"} → ${jabatan}`);
         if ((cur.area ?? "") !== area && area)
           changes.push(`Area: ${cur.area || "-"} → ${area}`);
+        if ((cur.pic ?? "") !== (r.pic ?? "").trim() && (r.pic ?? "").trim())
+          changes.push(`PIC: ${cur.pic || "-"} → ${(r.pic ?? "").trim()}`);
+        if ((cur.project ?? "") !== (r.project ?? "").trim() && (r.project ?? "").trim())
+          changes.push(`Project: ${cur.project || "-"} → ${(r.project ?? "").trim()}`);
       } else {
         changes.push("User Baru (Insert)");
       }
@@ -385,6 +393,8 @@ export async function getUserImportPreview(rows: UserImportRow[]) {
         regional,
         jabatan,
         nama_toko: namaToko,
+        pic: (r.pic ?? "").trim(),
+        project: (r.project ?? "").trim(),
         nama_tl: r.nama_tl ?? "",
         status: r.status ?? "active",
         role,
@@ -476,6 +486,8 @@ export async function applyUserImport(payload: {
       if (r.area.trim()) patch.area = r.area.trim();
       if (r.regional.trim()) patch.regional = r.regional.trim();
       if (namaToko) patch.nama_toko = namaToko;
+      if (r.pic?.trim()) patch.pic = r.pic.trim();
+      if (r.project?.trim()) patch.project = r.project.trim();
       if (supervisorId) patch.supervisor_id = supervisorId;
 
       const { error } = await supabase.from("users").update(patch).eq("id", cur.id);
@@ -492,6 +504,8 @@ export async function applyUserImport(payload: {
         regional: r.regional.trim() || null,
         jabatan: jabatan || null,
         nama_toko: namaToko || null,
+        pic: r.pic?.trim() || null,
+        project: r.project?.trim() || null,
         supervisor_id: supervisorId,
       });
       if (error) return { success: false as const, error: `Gagal insert ${nama}: ${error.message}` };
