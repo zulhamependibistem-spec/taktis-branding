@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { key: "attendance", href: "/admin/attendance", label: "Attendance", icon: "schedule" as const },
+  { key: "users", href: "/admin/users", label: "Users", icon: "users" as const },
+  { key: "import", href: "/admin/import", label: "Import DB", icon: "download" as const },
 ];
 
 async function logoutAction() {
