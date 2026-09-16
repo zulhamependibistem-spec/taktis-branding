@@ -16,8 +16,8 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TAKTIS Branding · Absensi & Laporan SPG",
-  description: "Sistem absensi dan pelaporan SPG TAKTIS Branding",
+  title: "TAKTIS Branding · Absensi SPG",
+  description: "Sistem absensi SPG TAKTIS Branding",
   icons: { icon: "/bistemlogo.webp" },
 };
 

@@ -1,31 +1,13 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getSessionUser, logoutService } from "@/lib/auth";
-import { getTeamAttendanceToday } from "@/lib/actions/tl";
+import { getAttendanceOverview } from "@/lib/actions/admin";
 import { Icon } from "@/components/ui/Icon";
 import StatusPill from "@/components/ui/StatusPill";
 import BottomNav from "@/components/ui/BottomNav";
 import { TL_NAV } from "@/components/ui/nav";
 import { cn } from "@/lib/utils";
 import { timeWIB, dateWIBLabel } from "@/lib/date";
-
-type Row = {
-  id: string;
-  initials: string;
-  name: string;
-  outlet: string;
-  status: string;
-  check_in_time: string | null;
-  check_out_time: string | null;
-  omzet: number;
-  qty: number;
-};
-
-const HADIR = ["checked_in", "checked_out"];
-
-function fmtRp(n: number) {
-  return "Rp " + (n ?? 0).toLocaleString("id-ID");
-}
 
 async function logoutAction() {
   "use server";
@@ -37,23 +19,21 @@ export default async function TlDashboard() {
   const me = await getSessionUser();
   if (!me) redirect("/login");
 
-  const res = await getTeamAttendanceToday();
-  const list: Row[] = res.success ? (res.list as unknown as Row[]) : [];
-  const summary = res.success && res.summary ? res.summary : { totalOmzet: 0, totalQty: 0 };
-
+  const res = await getAttendanceOverview();
+  const rows = res.success ? res.list : [];
   const date = dateWIBLabel();
-  const hadir = list.filter((s) => HADIR.includes(s.status)).length;
-  const belum = list.filter((s) => s.status === "not_checked_in").length;
+
+  const hadir = rows.filter((s) => s.status === "checked_in" || s.status === "checked_out").length;
+  const belum = rows.filter((s) => s.status === "not_checked_in").length;
 
   return (
     <div className="mx-auto min-h-screen max-w-md pb-24 md:max-w-6xl">
-      {/* Header */}
       <header className="sticky top-0 z-nav border-b border-slate-200/60 bg-white/90 px-4 py-4 backdrop-blur">
         <div className="mb-1 flex items-center justify-between">
           <div>
             <h1 className="text-[20px] font-semibold text-slate-900">Dashboard Team Leader</h1>
             <p className="mt-0.5 text-[12px] font-semibold text-slate-500">
-              {date} · {list.length} SPG binaan
+              {date} · {rows.length} anggota tim
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -81,56 +61,6 @@ export default async function TlDashboard() {
             {res.error}
           </p>
         )}
-        {/* Banner Total Sales Tim Hari Ini */}
-        <section className="relative overflow-hidden rounded-2xl bg-indigo-700 p-5 text-white shadow-lg">
-          <div className="pointer-events-none absolute -right-8 -top-10 h-36 w-36 rounded-full bg-white/10" />
-          <div className="pointer-events-none absolute -bottom-14 -left-10 h-40 w-40 rounded-full bg-white/5" />
-          <p className="text-[12px] font-medium text-white/80">Total Sales Tim Hari Ini</p>
-          <h2 className="mt-1 font-mono text-[26px] font-extrabold leading-tight">
-            {fmtRp(summary.totalOmzet)}
-          </h2>
-          <div className="mt-3 flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 rounded-lg bg-white/20 px-3 py-1 text-[12px] font-semibold backdrop-blur-sm">
-              <Icon name="analytics" size={14} />
-              {summary.totalQty.toLocaleString("id-ID")} pcs terjual
-            </span>
-            <span className="inline-flex items-center gap-1 rounded-lg bg-white/20 px-3 py-1 text-[12px] font-semibold backdrop-blur-sm">
-              <Icon name="users" size={14} />
-              {hadir}/{list.length} SPG aktif
-            </span>
-          </div>
-        </section>
-
-        {/* Menu Akses Cepat */}
-        <div className="grid grid-cols-3 gap-2">
-          <Link
-            href="/tl/attendance"
-            className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white p-3 text-center transition hover:bg-slate-50 active:scale-95 shadow-sm"
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-              <Icon name="users" size={18} />
-            </span>
-            <span className="text-[12px] font-bold text-slate-800">Absensi Tim</span>
-          </Link>
-          <Link
-            href="/tl/harga"
-            className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white p-3 text-center transition hover:bg-slate-50 active:scale-95 shadow-sm"
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-              <Icon name="edit" size={18} />
-            </span>
-            <span className="text-[12px] font-bold text-slate-800">Harga Toko</span>
-          </Link>
-          <Link
-            href="/tl/performa"
-            className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white p-3 text-center transition hover:bg-slate-50 active:scale-95 shadow-sm"
-          >
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
-              <Icon name="analytics" size={18} />
-            </span>
-            <span className="text-[12px] font-bold text-slate-800">Performa</span>
-          </Link>
-        </div>
 
         {/* Ringkasan Kehadiran */}
         <div className="grid grid-cols-2 gap-2">
@@ -144,19 +74,23 @@ export default async function TlDashboard() {
           </div>
         </div>
 
-        {list.length === 0 && (
-          <p className="pt-10 text-center text-sm text-slate-400">Belum ada SPG binaan.</p>
+        <Link
+          href="/tl/attendance"
+          className="flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-3 text-[14px] font-semibold text-white transition hover:bg-indigo-700 active:scale-95 shadow-sm"
+        >
+          <Icon name="users" size={18} />
+          Detail Absensi Tim
+        </Link>
+
+        {rows.length === 0 && (
+          <p className="pt-10 text-center text-sm text-slate-400">Belum ada anggota tim.</p>
         )}
 
-        {/* Daftar SPG Binaan */}
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-          {list.map((s) => {
+          {rows.map((s) => {
             const off = s.status === "not_checked_in";
             return (
-              <div
-                key={s.id}
-                className="rounded-xl bg-white p-4 shadow-sm"
-              >
+              <div key={s.id} className="rounded-xl bg-white p-4 shadow-sm">
                 <div className={cn("flex items-center gap-3", off && "opacity-60")}>
                   <div
                     className={cn(
@@ -164,7 +98,9 @@ export default async function TlDashboard() {
                       off ? "bg-slate-100 text-slate-500" : "bg-indigo-600/10 text-indigo-600"
                     )}
                   >
-                    {s.initials || <Icon name="woman" size={20} filled />}
+                    {s.role === "tl"
+                      ? String(s.name).split(" ").map((p) => p[0]).slice(0, 2).join("").toUpperCase()
+                      : <Icon name="woman" size={20} filled />}
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="truncate text-sm font-bold text-slate-900">{s.name}</h3>
@@ -172,16 +108,11 @@ export default async function TlDashboard() {
                       <Icon name="store" size={13} />
                       {s.outlet}
                     </p>
-                    {s.omzet > 0 && (
-                      <p className="mt-0.5 font-mono text-[11px] font-bold text-emerald-600">
-                        {fmtRp(s.omzet)} ({s.qty} pcs)
-                      </p>
-                    )}
                   </div>
                   <div className="shrink-0 text-right">
                     <StatusPill status={s.status} />
-                    {s.check_in_time && (
-                      <p className="mt-0.5 font-mono text-[10px] text-slate-400">{timeWIB(s.check_in_time)} WIB</p>
+                    {s.checkInTime && (
+                      <p className="mt-0.5 font-mono text-[10px] text-slate-400">{timeWIB(s.checkInTime)} WIB</p>
                     )}
                   </div>
                 </div>

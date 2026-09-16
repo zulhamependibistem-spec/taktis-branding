@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "TAKTIS Branding · Absensi & Laporan SPG",
+    name: "TAKTIS Branding · Absensi SPG",
     short_name: "TAKTIS Branding",
-    description: "Sistem absensi dan pelaporan SPG TAKTIS Branding",
+    description: "Sistem absensi SPG TAKTIS Branding",
     start_url: "/spg",
     display: "standalone",
     background_color: "#f8fafc",

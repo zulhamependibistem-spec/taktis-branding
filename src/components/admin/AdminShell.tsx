@@ -4,19 +4,8 @@ import { getSessionUser, logoutService } from "@/lib/auth";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 
-export type AdminKey = "dashboard" | "analytics" | "users" | "outlet" | "produk" | "import" | "harga" | "export" | "attendance" | "planning";
-
-const NAV: { key: AdminKey; href: string; label: string; icon: Parameters<typeof Icon>[0]["name"] }[] = [
-  { key: "dashboard", href: "/admin", label: "Dashboard", icon: "home" },
-  { key: "analytics", href: "/admin/analytics", label: "Analytics", icon: "analytics" },
-  { key: "planning", href: "/admin/planning", label: "Planning", icon: "calendar" },
-  { key: "attendance", href: "/admin/attendance", label: "Attendance", icon: "schedule" },
-  { key: "users", href: "/admin/users", label: "Users", icon: "users" },
-  { key: "outlet", href: "/admin/outlet", label: "Master Outlet", icon: "store" },
-  { key: "produk", href: "/admin/produk", label: "Produk & Harga", icon: "storefront" },
-  { key: "harga", href: "/admin/harga", label: "Harga Outlet", icon: "edit" },
-  { key: "import", href: "/admin/import", label: "Import & Sync", icon: "upload" },
-  { key: "export", href: "/admin/export", label: "Export", icon: "download" },
+const NAV = [
+  { key: "attendance", href: "/admin/attendance", label: "Attendance", icon: "schedule" as const },
 ];
 
 async function logoutAction() {
@@ -25,26 +14,17 @@ async function logoutAction() {
   redirect("/login");
 }
 
-const PIC_KEYS: AdminKey[] = ["dashboard", "analytics", "planning", "attendance"];
-
 export default async function AdminShell({
   active,
   children,
 }: {
-  active: AdminKey;
+  active: string;
   children: React.ReactNode;
 }) {
   const me = await getSessionUser();
   if (!me) redirect("/login");
 
-  // Protect PIC from accessing Admin-only management pages
-  if (me.role === "pic" && !PIC_KEYS.includes(active)) {
-    redirect("/admin");
-  }
-
-  const filteredNav = me.role === "pic" ? NAV.filter((item) => PIC_KEYS.includes(item.key)) : NAV;
-
-  const desktopNav = filteredNav.map((item) => {
+  const desktopNav = NAV.map((item) => {
     const isActive = item.key === active;
     return (
       <Link
@@ -61,7 +41,7 @@ export default async function AdminShell({
     );
   });
 
-  const mobileNav = filteredNav.map((item) => {
+  const mobileNav = NAV.map((item) => {
     const isActive = item.key === active;
     return (
       <Link
