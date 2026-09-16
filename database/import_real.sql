@@ -574,7 +574,7 @@ INSERT INTO users (full_name, nip, role, status, area, regional, jabatan, pic, t
 INSERT INTO users (full_name, nip, role, status, area, regional, jabatan, pic, tl_name, nama_toko) VALUES ('HAULA LUTFIA MANSYAH', '20987', 'spg', 'active', 'KABUPATEN CILACAP', 'JAWA TENGAH', 'SPG STAY JSM', 'NENDEN/ZULHAM', 'SUPRIYATI', null) ON CONFLICT (nip) DO NOTHING;
 INSERT INTO users (full_name, nip, role, status, area, regional, jabatan, pic, tl_name, nama_toko) VALUES ('SRI YULI ASTUTI', NULL, 'spg', 'active', 'BLORA', 'JAWA TENGAH', 'SPG/B', 'NENDEN/ZULHAM', null, null) ON CONFLICT (nip) DO NOTHING;
 INSERT INTO users (full_name, nip, role, status, area, regional, jabatan, pic, tl_name, nama_toko) VALUES ('MARTHA KRISTINA NOYA', NULL, 'spg', 'active', 'CEPU JATENG', 'JAWA TENGAH', 'SPG/B', 'NENDEN/ZULHAM', null, null) ON CONFLICT (nip) DO NOTHING;
-INSERT INTO users (full_name, nip, role, status) VALUES ('ZULHAM', '9001', 'admin', 'active') ON CONFLICT (nip) DO NOTHING;
+INSERT INTO users (full_name, nip, role, status) VALUES ('ERLITA', '9001', 'admin', 'active') ON CONFLICT (nip) DO NOTHING;
 INSERT INTO users (full_name, nip, role, status) VALUES ('SUCAHYONO', '9002', 'pic', 'active') ON CONFLICT (nip) DO NOTHING;
 INSERT INTO users (full_name, nip, role, status) VALUES ('NENDEN', '9003', 'pic', 'active') ON CONFLICT (nip) DO NOTHING;
 

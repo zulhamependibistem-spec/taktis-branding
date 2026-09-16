@@ -529,3 +529,128 @@ export async function applyUserImport(payload: {
 
   return { success: true as const, inserted, updated, deactivated };
 }
+
+// ---------- Import Absensi ----------
+
+export type AttendanceImportRow = {
+  nip: string;
+  tanggal: string; // YYYY-MM-DD
+  jamMasuk: string | null; // HH:MM
+  jamKeluar: string | null; // HH:MM
+  lokasi: string;
+};
+
+export type AttendancePreviewRow = AttendanceImportRow & {
+  nama: string;
+  mode: "baru" | "ada" | "tidak_ditemukan";
+  error: string;
+};
+
+function wibToISO(dateStr: string, timeStr: string | null, addDays = 0): string | null {
+  if (!timeStr) return null;
+  const d = new Date(`${dateStr}T${timeStr}:00+07:00`);
+  if (Number.isNaN(d.getTime())) return null;
+  if (addDays) d.setTime(d.getTime() + addDays * 86400000);
+  return d.toISOString();
+}
+
+export async function getAttendanceImportPreview(rows: AttendanceImportRow[], dari: string, sampai: string) {
+  const user = await getSessionUser();
+  if (!user || user.role !== "admin") return { success: false as const, error: "Akses ditolak." };
+
+  if (!dari || !sampai || dari > sampai)
+    return { success: false as const, error: "Rentang tanggal tidak valid." };
+
+  const supabase = createServerClient();
+
+  const { data: users } = await supabase.from("users").select("id, nip, full_name, status");
+  const byNip = new Map<string, { id: string; full_name: string; status: string }>();
+  (users ?? []).forEach((u) => {
+    if (u.nip) byNip.set(u.nip.trim(), u);
+  });
+
+  const within = rows.filter((r) => r.tanggal >= dari && r.tanggal <= sampai);
+  const outside = rows.length - within.length;
+
+  const preview: AttendancePreviewRow[] = [];
+  const idSet = new Set<string>();
+  for (const r of within) {
+    const u = byNip.get(r.nip.trim());
+    if (!u) {
+      preview.push({ ...r, nama: "", mode: "tidak_ditemukan", error: "NIP tidak ditemukan" });
+      continue;
+    }
+    idSet.add(u.id);
+    preview.push({ ...r, nama: u.full_name, mode: "baru", error: "" });
+  }
+
+  if (idSet.size) {
+    const { data: att } = await supabase
+      .from("attendance")
+      .select("user_id, report_date")
+      .in("user_id", Array.from(idSet))
+      .gte("report_date", dari)
+      .lte("report_date", sampai);
+    const existingKeys = new Set((att ?? []).map((a) => `${a.user_id}|${a.report_date}`));
+    preview.forEach((p) => {
+      const u = byNip.get(p.nip.trim());
+      if (u && existingKeys.has(`${u.id}|${p.tanggal}`)) p.mode = "ada";
+    });
+  }
+
+  return { success: true as const, preview, inRange: within.length, outside };
+}
+
+export async function applyAttendanceImport(rows: AttendanceImportRow[]) {
+  const user = await getSessionUser();
+  if (!user || user.role !== "admin") return { success: false as const, error: "Akses ditolak." };
+
+  const supabase = createServerClient();
+  const { data: users } = await supabase.from("users").select("id, nip");
+  const byNip = new Map<string, string>();
+  (users ?? []).forEach((u) => {
+    if (u.nip) byNip.set(u.nip.trim(), u.id);
+  });
+
+  let inserted = 0;
+  let skipped = 0;
+  let failed = 0;
+  for (const r of rows) {
+    const userId = byNip.get(r.nip.trim());
+    if (!userId) {
+      failed++;
+      continue;
+    }
+
+    const { data: ex } = await supabase
+      .from("attendance")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("report_date", r.tanggal)
+      .maybeSingle();
+    if (ex) {
+      skipped++;
+      continue;
+    }
+
+    const checkIn = wibToISO(r.tanggal, r.jamMasuk);
+    let checkOut = wibToISO(r.tanggal, r.jamKeluar);
+    if (checkOut && checkIn && checkOut <= checkIn) checkOut = wibToISO(r.tanggal, r.jamKeluar, 1);
+
+    const { error } = await supabase.from("attendance").insert({
+      user_id: userId,
+      report_date: r.tanggal,
+      check_in_time: checkIn,
+      check_out_time: checkOut,
+      location_name: r.lokasi || null,
+      status: checkOut ? "checked_out" : checkIn ? "checked_in" : "not_checked_in",
+    });
+    if (error) {
+      failed++;
+      continue;
+    }
+    inserted++;
+  }
+
+  return { success: true as const, inserted, skipped, failed };
+}

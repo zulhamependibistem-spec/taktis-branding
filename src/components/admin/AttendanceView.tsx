@@ -111,14 +111,13 @@ export default function AttendanceView({
       ROLE: r.role.toUpperCase(),
       "NAMA SPG": r.name,
       NIP: r.nip || "-",
-      "NAMA SUPERVISOR": r.tl,
       STATUS: r.status === "checked_out" ? "Check Out" : r.status === "checked_in" ? "Check In" : "Belum Absen",
       "JAM CHECK IN": r.checkInTime ? `${timeWIB(r.checkInTime)} WIB` : "-",
       "JAM CHECK OUT": r.checkOutTime ? `${timeWIB(r.checkOutTime)} WIB` : "-",
       LATITUDE: r.lat ?? "",
       LONGITUDE: r.lng ?? "",
-      "URL FOTO CHECK IN": r.checkInPhoto ? `=HYPERLINK("${r.checkInPhoto}", "Lihat Foto Check-In")` : "",
-      "URL FOTO CHECK OUT": r.checkOutPhoto ? `=HYPERLINK("${r.checkOutPhoto}", "Lihat Foto Check-Out")` : "",
+      "URL FOTO CHECK IN": r.checkInPhoto ?? "",
+      "URL FOTO CHECK OUT": r.checkOutPhoto ?? "",
     }));
 
     const XLSX = await import("xlsx");
@@ -129,14 +128,13 @@ export default function AttendanceView({
       { wch: 8 },  // ROLE
       { wch: 26 }, // NAMA
       { wch: 16 }, // NIP
-      { wch: 24 }, // SUPERVISOR
       { wch: 16 }, // STATUS
       { wch: 16 }, // CHECK IN
       { wch: 16 }, // CHECK OUT
       { wch: 14 }, // LAT
       { wch: 14 }, // LNG
-      { wch: 50 }, // URL FOTO CHECK IN
-      { wch: 50 }, // URL FOTO CHECK OUT
+      { wch: 60 }, // URL FOTO CHECK IN
+      { wch: 60 }, // URL FOTO CHECK OUT
     ];
     XLSX.utils.book_append_sheet(wb, ws, "DATA ABSENSI");
     const dStr = new Date().toISOString().slice(0, 10);
