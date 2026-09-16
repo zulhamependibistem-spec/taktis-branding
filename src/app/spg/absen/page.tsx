@@ -3,6 +3,8 @@ import { getSessionUser, logoutService } from "@/lib/auth";
 import { getAttendanceToday } from "@/lib/actions/attendance";
 import { dateWIBLabel } from "@/lib/date";
 import { Icon } from "@/components/ui/Icon";
+import BottomNav from "@/components/ui/BottomNav";
+import { SPG_NAV } from "@/components/ui/nav";
 import CheckIn from "../CheckIn";
 
 async function logoutAction() {
@@ -19,7 +21,7 @@ export default async function SpgAbsenPage() {
   const attendance = res.success ? res.attendance : null;
 
   return (
-    <div className="mx-auto min-h-screen max-w-md pb-10">
+    <div className="mx-auto min-h-screen max-w-md pb-24">
       <header className="sticky top-0 z-nav border-b border-slate-200/60 bg-white px-4 py-4">
         <div className="flex items-center justify-between gap-2">
           <div>
@@ -61,6 +63,8 @@ export default async function SpgAbsenPage() {
           Verifikasi absensi ditangani Team Leader dari foto & timestamp Anda.
         </p>
       </main>
+
+      <BottomNav active="absen" items={SPG_NAV} />
     </div>
   );
 }
