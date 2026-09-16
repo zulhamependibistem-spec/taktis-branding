@@ -4,11 +4,7 @@ import { getSessionUser } from "@/lib/auth";
 import { createServerClient } from "@/lib/supabase/server";
 import { todayWIB } from "@/lib/date";
 
-function grsmRank(g: string): number {
-  if (!g) return 999;
-  const m = /GRSM\s*(\d+)A?/.exec(g);
-  return m ? Number(m[1]) : 999;
-}
+/* Area ditampilkan sebagai pengganti outlet; sort default tetap urut nama. */
 
 type AttRow = {
   id: string;
@@ -16,9 +12,8 @@ type AttRow = {
   nip: string | null;
   status: "active" | "inactive";
   supervisor_id: string | null;
-  assigned_outlet_id: string | null;
   role: string;
-  outlets: { name: string; grsm: string } | { name: string } | null;
+  area: string | null;
   supervisor: { full_name: string } | null;
 };
 
@@ -49,7 +44,7 @@ export async function getAttendanceOverview() {
 
   let query = supabase
     .from("users")
-    .select("id, full_name, nip, status, supervisor_id, assigned_outlet_id, role, outlets(name, grsm)")
+    .select("id, full_name, nip, status, supervisor_id, role, area")
     .in("role", ["spg", "tl"])
     .in("status", ["active", "backup"]);
 
@@ -75,12 +70,11 @@ export async function getAttendanceOverview() {
       s.supervisor_id && supNames.has(s.supervisor_id) ? { full_name: supNames.get(s.supervisor_id)! } : null;
   });
 
-  const g = (o: AttRow["outlets"]) => (o && "grsm" in o ? (o.grsm ?? "") : "");
+  const g = (a: AttRow) => a.area ?? "";
   spgs.sort(
     (a, b) =>
       (a.role === "tl" ? 1 : 0) - (b.role === "tl" ? 1 : 0) ||
-      grsmRank(g(a.outlets)) - grsmRank(g(b.outlets)) ||
-      a.outlets?.name?.localeCompare(b.outlets?.name ?? "") ||
+      g(a).localeCompare(g(b)) ||
       a.full_name.localeCompare(b.full_name)
   );
 
@@ -135,8 +129,7 @@ export async function getAttendanceOverview() {
       role: s.role,
       name: s.full_name,
       nip: s.nip,
-      outlet: s.outlets?.name ?? "—",
-      grsm: g(s.outlets),
+      area: s.area ?? "—",
       tl: user.role === "tl" ? user.full_name : (s.supervisor?.full_name ?? "—"),
       status: a?.status ?? "not_checked_in",
       checkInTime: a?.check_in_time ?? null,
@@ -190,35 +183,21 @@ export async function resetAttendanceAction(attendanceId: string) {
 
 // ---------- User Management ----------
 
-type Resolved = {
-  outlet(id: string | null): string;
-  supervisor(id: string | null): string;
-};
-
 async function resolveNames(rows: {
-  assigned_outlet_id: string | null;
   supervisor_id: string | null;
-}[]): Promise<Resolved> {
-  const outlet = new Map<string, string>();
+}[]): Promise<{ supervisor: (id: string | null) => string }> {
   const sup = new Map<string, string>();
-  const outletIds = [...new Set(rows.map((r) => r.assigned_outlet_id).filter(Boolean))] as string[];
   const supIds = [...new Set(rows.map((r) => r.supervisor_id).filter(Boolean))] as string[];
 
   const supabase = createServerClient();
-  const outletReq = outletIds.length
-    ? supabase.from("outlets").select("id, name").in("id", outletIds)
-    : Promise.resolve({ data: null });
   const supReq = supIds.length
     ? supabase.from("users").select("id, full_name").in("id", supIds)
     : Promise.resolve({ data: null });
 
-  const [{ data: outletData }, { data: supData }] = await Promise.all([outletReq, supReq]);
-
-  (outletData ?? []).forEach((o) => outlet.set(o.id, o.name));
+  const { data: supData } = await supReq;
   (supData ?? []).forEach((s) => sup.set(s.id, s.full_name));
 
   return {
-    outlet: (id) => (id && outlet.get(id)) || "-",
     supervisor: (id) => (id && sup.get(id)) || "-",
   };
 }
@@ -230,7 +209,7 @@ export async function getUsers() {
   const supabase = createServerClient();
   const { data, error } = await supabase
     .from("users")
-    .select("id, nip, full_name, phone, role, status, assigned_outlet_id, supervisor_id")
+    .select("id, nip, full_name, phone, role, status, supervisor_id")
     .order("nip");
 
   if (error) return { success: false as const, error: "Gagal memuat users." };
@@ -244,8 +223,6 @@ export async function getUsers() {
     hp: u.phone,
     role: u.role,
     status: u.status,
-    outletId: u.assigned_outlet_id,
-    outlet: names.outlet(u.assigned_outlet_id),
     tlId: u.supervisor_id,
     tl: names.supervisor(u.supervisor_id),
   }));
@@ -279,12 +256,6 @@ export async function deleteUserAction(userId: string) {
     return { success: false as const, error: "Tidak dapat menghapus akun sendiri." };
 
   const supabase = createServerClient();
-  const { error: refErr } = await supabase
-    .from("monthly_planning")
-    .update({ created_by: null })
-    .eq("created_by", userId);
-  if (refErr) return { success: false as const, error: `Gagal menghapus user: ${refErr.message}` };
-
   const { error } = await supabase.from("users").delete().eq("id", userId);
   if (error) return { success: false as const, error: `Gagal menghapus user: ${error.message}` };
 
@@ -306,12 +277,6 @@ export async function deleteInactiveUsersAction() {
 
   const ids = (list ?? []).map((r) => r.id);
   if (ids.length > 0) {
-    const { error: refErr } = await supabase
-      .from("monthly_planning")
-      .update({ created_by: null })
-      .in("created_by", ids);
-    if (refErr) return { success: false as const, error: `Gagal menghapus: ${refErr.message}` };
-
     const { error } = await supabase.from("users").delete().in("id", ids);
     if (error) return { success: false as const, error: `Gagal menghapus: ${error.message}` };
   }
@@ -319,57 +284,7 @@ export async function deleteInactiveUsersAction() {
   return { success: true as const, deleted: ids.length };
 }
 
-// ---------- Import (Outlet & User) ----------
-
-export type OutletImportRow = {
-  code_outlet: string;
-  name: string;
-  grsm: string;
-  area: string;
-  channel_group: string;
-  code_subdist: string;
-};
-
-export async function getOutletCodes(): Promise<string[]> {
-  const user = await getSessionUser();
-  if (!user || (user.role !== "admin" && user.role !== "pic")) return [];
-
-  const supabase = createServerClient();
-  const { data } = await supabase.from("outlets").select("code_outlet");
-  return (data ?? []).map((r) => r.code_outlet);
-}
-
-export async function syncOutlets(rows: OutletImportRow[]) {
-  const user = await getSessionUser();
-  if (!user || user.role !== "admin")
-    return { success: false as const, error: "Akses ditolak." };
-
-  const supabase = createServerClient();
-  const unique = new Map<string, OutletImportRow>();
-  for (const r of rows) {
-    const code = r.code_outlet.trim();
-    if (!code) continue;
-    if (!unique.has(code)) unique.set(code, { ...r, code_outlet: code });
-  }
-
-  const payload = [...unique.values()].map((r) => ({
-    code_outlet: r.code_outlet,
-    name: r.name.trim() || null,
-    grsm: r.grsm.trim() || null,
-    area: r.area.trim() || null,
-    channel_group: r.channel_group.trim() || null,
-    code_subdist: r.code_subdist.trim() || null,
-  }));
-
-  if (!payload.length) return { success: false as const, error: "Tidak ada baris valid." };
-
-  const { error } = await supabase
-    .from("outlets")
-    .upsert(payload, { onConflict: "code_outlet" });
-
-  if (error) return { success: false as const, error: `Gagal sinkronisasi: ${error.message}` };
-  return { success: true as const, synced: payload.length };
-}
+// ---------- Import (User only) ----------
 
 export type UserImportRow = {
   nip: string;
@@ -383,41 +298,10 @@ export type UserImportRow = {
   status?: "active" | "backup";
 };
 
+const normName = (s: string) => s.toUpperCase().replace(/[^A-Z0-9]/g, "");
+
 function roleFromJabatan(jabatan: string): "tl" | "spg" {
   return /TL/i.test(jabatan) ? "tl" : "spg";
-}
-
-const normOutletName = (s: string) => s.toUpperCase().replace(/[^A-Z0-9]/g, "");
-
-async function loadOutletResolver(supabase: ReturnType<typeof createServerClient>) {
-  const [{ data: outletData }, { data: aliasData }] = await Promise.all([
-    supabase.from("outlets").select("id, name"),
-    supabase.from("outlet_aliases").select("name, outlet_id"),
-  ]);
-
-  const exactUpper = new Map<string, string>();
-  const byNorm = new Map<string, string>();
-  const list: { id: string; name: string }[] = [];
-  (outletData ?? []).forEach((o) => {
-    exactUpper.set(o.name.trim().toUpperCase(), o.id);
-    byNorm.set(normOutletName(o.name), o.id);
-    list.push({ id: o.id, name: o.name.trim() });
-  });
-  (aliasData ?? []).forEach((a) => byNorm.set(a.name, a.outlet_id));
-
-  function resolve(name: string): { id: string | null; kind: "exact" | "norm" | "contains" | "none" } {
-    const clean = name.trim();
-    if (!clean) return { id: null, kind: "none" };
-    const up = clean.toUpperCase();
-    if (exactUpper.has(up)) return { id: exactUpper.get(up)!, kind: "exact" };
-    const normHit = byNorm.get(normOutletName(clean));
-    if (normHit) return { id: normHit, kind: "norm" };
-    const contains = list.find((o) => o.name.toUpperCase().includes(up));
-    if (contains) return { id: contains.id, kind: "contains" };
-    return { id: null, kind: "none" };
-  }
-
-  return { resolve, outletOptions: list.sort((a, b) => a.name.localeCompare(b.name)) };
 }
 
 export async function getUserImportPreview(rows: UserImportRow[]) {
@@ -432,7 +316,6 @@ export async function getUserImportPreview(rows: UserImportRow[]) {
   const { data: existing } = await supabase
     .from("users")
     .select("id, nip, full_name, role, status, phone, area, regional, jabatan, nama_toko");
-  const outletResolver = await loadOutletResolver(supabase);
 
   type ExistingUser = {
     id: string;
@@ -473,7 +356,6 @@ export async function getUserImportPreview(rows: UserImportRow[]) {
       const jabatan = r.jabatan.trim();
       const namaToko = r.nama_toko.trim();
       const role = roleFromJabatan(jabatan);
-      const outlet = outletResolver.resolve(namaToko);
 
       const cur = (nip ? byNip.get(nip) : null) ?? byName.get(nama.toUpperCase());
 
@@ -509,8 +391,6 @@ export async function getUserImportPreview(rows: UserImportRow[]) {
         mode: (cur ? "update" : "baru") as "update" | "baru",
         changes,
         hasChanges: changes.length > 0,
-        outletId: outlet.id,
-        outletMatch: outlet.kind,
       };
     });
 
@@ -525,13 +405,12 @@ export async function getUserImportPreview(rows: UserImportRow[]) {
     .map((u) => ({ nip: u.nip, nama: u.full_name }))
     .sort((a, b) => a.nip.localeCompare(b.nip));
 
-  return { success: true as const, preview, lepas, outletOptions: outletResolver.outletOptions };
+  return { success: true as const, preview, lepas };
 }
 
 export async function applyUserImport(payload: {
   rows: UserImportRow[];
   deactivateNips: string[];
-  outletResolve?: (string | null)[];
 }) {
   const user = await getSessionUser();
   if (!user || user.role !== "admin")
@@ -553,33 +432,23 @@ export async function applyUserImport(payload: {
 
   const tlByName = new Map<string, string>();
   (existingAll ?? []).forEach((u) => {
-    if (u.role === "tl" && u.full_name) tlByName.set(normOutletName(u.full_name), u.id);
+    if (u.role === "tl" && u.full_name) tlByName.set(normName(u.full_name), u.id);
   });
   const tlNameCache = new Map<string, string | null>();
   function tlIdByName(name: string): string | null {
     const clean = name.trim();
     if (!clean) return null;
-    const key = normOutletName(clean);
+    const key = normName(clean);
     if (tlNameCache.has(key)) return tlNameCache.get(key) ?? null;
     const foundId = tlByName.get(key) ?? null;
     tlNameCache.set(key, foundId);
     return foundId;
   }
 
-  const outletResolver = await loadOutletResolver(supabase);
-  async function saveAlias(namaToko: string, outletId: string) {
-    if (!namaToko.trim()) return;
-    await supabase.from("outlet_aliases").upsert(
-      { name: normOutletName(namaToko), outlet_id: outletId },
-      { onConflict: "name" }
-    );
-  }
-
   let inserted = 0;
   let updated = 0;
   const seen = new Set<string>();
-  for (let i = 0; i < payload.rows.length; i++) {
-    const r = payload.rows[i];
+  for (const r of payload.rows) {
     const nip = r.nip.trim();
     const nama = r.nama.trim();
     const key = nip || nama.toUpperCase();
@@ -590,13 +459,8 @@ export async function applyUserImport(payload: {
     const jabatan = r.jabatan.trim();
     const role = roleFromJabatan(jabatan);
     const namaToko = r.nama_toko.trim();
-    const auto = outletResolver.resolve(namaToko);
-    const override = payload.outletResolve?.[i] ?? null;
-    const outletId = override ?? auto.id;
     const namaTl = (r.nama_tl ?? "").trim();
     const supervisorId = role === "spg" ? tlIdByName(namaTl) : null;
-
-    if (namaToko && outletId && (override || auto.kind === "contains")) await saveAlias(namaToko, outletId);
 
     const cur = (nip ? byNip.get(nip) : null) ?? byName.get(nama.toUpperCase());
 
@@ -612,7 +476,6 @@ export async function applyUserImport(payload: {
       if (r.area.trim()) patch.area = r.area.trim();
       if (r.regional.trim()) patch.regional = r.regional.trim();
       if (namaToko) patch.nama_toko = namaToko;
-      if (outletId) patch.assigned_outlet_id = outletId;
       if (supervisorId) patch.supervisor_id = supervisorId;
 
       const { error } = await supabase.from("users").update(patch).eq("id", cur.id);
@@ -629,7 +492,6 @@ export async function applyUserImport(payload: {
         regional: r.regional.trim() || null,
         jabatan: jabatan || null,
         nama_toko: namaToko || null,
-        assigned_outlet_id: outletId,
         supervisor_id: supervisorId,
       });
       if (error) return { success: false as const, error: `Gagal insert ${nama}: ${error.message}` };

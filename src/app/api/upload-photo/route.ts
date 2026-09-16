@@ -33,9 +33,6 @@ export async function POST(req: NextRequest) {
 
   // Validasi absensi dulu SEBELUM upload — absen yang ditolak tidak meninggalkan foto yatim di storage.
   if (action === "in") {
-    if (user.role === "spg" && !user.assigned_outlet_id) {
-      return NextResponse.json({ error: "Tidak ada outlet yang ditugaskan." }, { status: 400 });
-    }
     const { data } = await supabase
       .from("attendance")
       .select("id, check_in_time")
@@ -72,32 +69,6 @@ export async function POST(req: NextRequest) {
   }
 
   if (action === "in") {
-    let outletId = user.assigned_outlet_id;
-    if (!outletId) {
-      // TL / user tanpa outlet: ambil outlet pertama dari SPG binaan atau master outlet
-      const { data: spgOutlet } = await supabase
-        .from("users")
-        .select("assigned_outlet_id")
-        .eq("supervisor_id", user.id)
-        .not("assigned_outlet_id", "is", null)
-        .limit(1)
-        .maybeSingle();
-      outletId = spgOutlet?.assigned_outlet_id ?? null;
-
-      if (!outletId) {
-        const { data: firstOutlet } = await supabase
-          .from("outlets")
-          .select("id")
-          .limit(1)
-          .maybeSingle();
-        outletId = firstOutlet?.id ?? null;
-      }
-    }
-
-    if (!outletId) {
-      return NextResponse.json({ error: "Tidak ada outlet terdaftar di sistem." }, { status: 400 });
-    }
-
     let locationName: string | null = null;
     if (lat !== null && lng !== null) {
       try {
@@ -121,7 +92,6 @@ export async function POST(req: NextRequest) {
       .from("attendance")
       .insert({
         user_id: user.id,
-        outlet_id: outletId,
         report_date: today,
         check_in_time: new Date().toISOString(),
         check_in_photo_url: path,

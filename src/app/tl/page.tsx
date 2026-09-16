@@ -106,7 +106,7 @@ export default async function TlDashboard() {
                     <h3 className="truncate text-sm font-bold text-slate-900">{s.name}</h3>
                     <p className="flex items-center gap-1 truncate text-[12px] text-slate-500">
                       <Icon name="store" size={13} />
-                      {s.outlet}
+                      {s.area}
                     </p>
                   </div>
                   <div className="shrink-0 text-right">

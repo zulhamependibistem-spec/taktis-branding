@@ -19,11 +19,8 @@ export default async function SpgHome() {
   if (!me) redirect("/login");
 
   const supabase = createServerClient();
-  const [outletRes, meRes, attRes] = await Promise.all([
-    me.assigned_outlet_id
-      ? supabase.from("outlets").select("name, grsm").eq("id", me.assigned_outlet_id).limit(1).maybeSingle()
-      : Promise.resolve({ data: null }),
-    supabase.from("users").select("avatar_url").eq("id", me.id).limit(1).maybeSingle(),
+  const [meRes, attRes] = await Promise.all([
+    supabase.from("users").select("avatar_url, area").eq("id", me.id).limit(1).maybeSingle(),
     supabase
       .from("attendance")
       .select("check_in_time, check_out_time, check_in_photo_url, status")
@@ -34,8 +31,7 @@ export default async function SpgHome() {
       .maybeSingle(),
   ]);
 
-  const outletData = outletRes.data as { name?: string; grsm?: string } | null;
-  const area = outletData?.grsm ?? null;
+  const area = (meRes.data as { area?: string | null } | null)?.area ?? null;
 
   const today = dateWIBLabel(new Date(), { weekday: "short", day: "numeric", month: "short" });
 

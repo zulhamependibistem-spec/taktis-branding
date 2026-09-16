@@ -15,8 +15,7 @@ export type AttRow = {
   role: string;
   name: string;
   nip: string | null;
-  outlet: string;
-  grsm: string;
+  area: string;
   tl: string;
   status: string;
   checkInTime: string | null;
@@ -110,11 +109,10 @@ export default function AttendanceView({
 
   async function exportXLSX() {
     const list = filteredRows.map((r) => ({
-      GRSM: r.grsm || "-",
+      AREA: r.area || "-",
       ROLE: r.role.toUpperCase(),
       "NAMA SPG/TL": r.name,
       NIP: r.nip || "-",
-      "NAMA OUTLET": r.outlet,
       "NAMA SUPERVISOR": r.tl,
       STATUS: r.status === "checked_out" ? "Check Out" : r.status === "checked_in" ? "Check In" : "Belum Absen",
       "JAM CHECK IN": r.checkInTime ? `${timeWIB(r.checkInTime)} WIB` : "-",
@@ -129,11 +127,10 @@ export default function AttendanceView({
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(list);
     ws["!cols"] = [
-      { wch: 10 }, // GRSM
+      { wch: 14 }, // AREA
       { wch: 8 },  // ROLE
       { wch: 26 }, // NAMA
       { wch: 16 }, // NIP
-      { wch: 30 }, // OUTLET
       { wch: 24 }, // SUPERVISOR
       { wch: 16 }, // STATUS
       { wch: 16 }, // CHECK IN
@@ -287,7 +284,7 @@ export default function AttendanceView({
                   </h3>
                   <p className="truncate text-[12px] text-slate-500">
                     {r.nip && <span className="mr-1.5 font-mono">{r.nip}</span>}
-                    {r.outlet}
+                    {r.area}
                     {showTl && <span className="ml-1.5">· {r.role === "tl" ? "PIC" : "Team Leader"} {r.tl}</span>}
                   </p>
                 </div>

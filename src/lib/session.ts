@@ -5,7 +5,6 @@ export type SessionUser = {
   full_name: string;
   nip: string;
   role: "spg" | "tl" | "pic" | "admin";
-  assigned_outlet_id: string | null;
 };
 
 let cachedSecret: Uint8Array | null = null;

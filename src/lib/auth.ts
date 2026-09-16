@@ -22,7 +22,7 @@ export async function loginService(identifier: string) {
   const base = () =>
     supabase
       .from("users")
-      .select("id, full_name, nip, role, assigned_outlet_id, phone")
+      .select("id, full_name, nip, role, phone")
       .in("status", ["active", "backup"]);
 
   const [byNip, byDigits, byPhone] = await Promise.all([
@@ -45,7 +45,6 @@ export async function loginService(identifier: string) {
     full_name: data.full_name,
     nip: data.nip,
     role: data.role as SessionUser["role"],
-    assigned_outlet_id: data.assigned_outlet_id,
   };
 
   const token = await createSessionToken(user);
@@ -71,21 +70,20 @@ export async function getSessionUser(): Promise<SessionUser | null> {
   const supabase = await createServerSupabase();
   const { data } = await supabase
     .from("users")
-    .select("id, full_name, nip, role, assigned_outlet_id, status")
+    .select("id, full_name, nip, role, status")
     .eq("id", user.id)
     .maybeSingle();
   if (!data || (data.status !== "active" && data.status !== "backup")) {
     cookieStore.delete(SESSION_COOKIE);
     return null;
   }
-  // Baca role & outlet langsung dari DB setiap request — demosi/perpindahan toko
-  // berlaku seketika, tidak menunggu token 12 jam kedaluwarsa.
+  // Baca role langsung dari DB setiap request — demosi berlaku seketika,
+  // tidak menunggu token 12 jam kedaluwarsa.
   return {
     id: data.id,
     full_name: data.full_name,
     nip: data.nip ?? "",
     role: data.role as SessionUser["role"],
-    assigned_outlet_id: data.assigned_outlet_id,
   };
 }
 

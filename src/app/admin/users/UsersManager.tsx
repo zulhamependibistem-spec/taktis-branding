@@ -15,7 +15,6 @@ type Row = {
   nama: string;
   hp: string | null;
   role: Role;
-  outlet: string;
   tl: string;
   status: "active" | "inactive" | "backup";
 };
@@ -248,7 +247,6 @@ export default function UsersManager({ initial, loadError }: { initial: Row[]; l
                 <th className="px-4 py-3 font-semibold">Nama</th>
                 <th className="px-4 py-3 font-semibold">No. HP</th>
                 <th className="px-4 py-3 font-semibold">Role</th>
-                <th className="px-4 py-3 font-semibold">Outlet</th>
                 <th className="px-4 py-3 font-semibold">Team Leader</th>
                 <th className="px-4 py-3 text-left font-semibold">Status</th>
                 <th className="px-4 py-3 text-left font-semibold">Aksi</th>
@@ -257,7 +255,7 @@ export default function UsersManager({ initial, loadError }: { initial: Row[]; l
             <tbody className="divide-y divide-slate-100">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-4 py-12 text-center">
+                  <td colSpan={7} className="px-4 py-12 text-center">
                     <div className="mx-auto flex max-w-xs flex-col items-center justify-center">
                       <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
                         <Icon name="search" size={24} />
@@ -296,7 +294,6 @@ export default function UsersManager({ initial, loadError }: { initial: Row[]; l
                         {ROLE_LABEL[r.role]}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-slate-500">{r.outlet}</td>
                     <td className="px-4 py-3 text-slate-500">{r.tl}</td>
                     <td className="px-4 py-3 text-left">
                       <StatusPill status={r.status} />

@@ -19,7 +19,7 @@ export default async function ProfilPage() {
   const supabase = createServerClient();
   const { data } = await supabase
     .from("users")
-    .select("full_name, nip, supervisor_id, assigned_outlet_id, avatar_url")
+    .select("full_name, nip, supervisor_id, area, avatar_url")
     .eq("id", me.id)
     .maybeSingle();
 
@@ -27,20 +27,11 @@ export default async function ProfilPage() {
     full_name: string;
     nip: string;
     supervisor_id: string | null;
-    assigned_outlet_id: string | null;
+    area: string | null;
     avatar_url: string | null;
   } | null;
 
-  let outletName: string | null = null;
   let supervisorName: string | null = null;
-  if (prof?.assigned_outlet_id) {
-    const { data: o } = await supabase
-      .from("outlets")
-      .select("name")
-      .eq("id", prof.assigned_outlet_id)
-      .maybeSingle();
-    outletName = o?.name ?? null;
-  }
   if (prof?.supervisor_id) {
     const { data: s } = await supabase
       .from("users")
@@ -61,11 +52,11 @@ export default async function ProfilPage() {
         {/* Info */}
         <h1 className="mb-1 text-[24px] font-bold text-slate-900">{prof?.full_name}</h1>
         <p className="mb-1 font-mono text-sm text-slate-400">NIP: {prof?.nip}</p>
-        {outletName && (
+        {prof?.area && (
           <div className="mb-8 inline-flex items-center gap-1 rounded-full bg-indigo-600/10 px-3 py-1">
             <Icon name="storefront" size={14} className="text-indigo-600" />
             <span className="text-[12px] font-bold uppercase tracking-wider text-indigo-600">
-              {outletName}
+              {prof.area}
             </span>
           </div>
         )}
