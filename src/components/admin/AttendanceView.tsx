@@ -7,7 +7,7 @@ import StatusPill from "@/components/ui/StatusPill";
 import { useConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { cn } from "@/lib/utils";
 import { timeWIB } from "@/lib/date";
-import { resetAttendanceAction } from "@/lib/actions/admin";
+import { resetAttendanceAction, getAttendanceExport } from "@/lib/actions/admin";
 
 export type AttRow = {
   id: string;
@@ -33,6 +33,12 @@ function initials(name: string) {
     .slice(0, 2)
     .join("")
     .toUpperCase();
+}
+
+function todayStr() {
+  const d = new Date();
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 10);
 }
 
 function PhotoCell({
@@ -85,6 +91,9 @@ export default function AttendanceView({
   const [preview, setPreview] = useState<{ photo: string; label: string } | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [resetErr, setResetErr] = useState<string | null>(null);
+  const [range, setRange] = useState({ dari: "", sampai: "" });
+  const [exporting, setExporting] = useState(false);
+  const [exportErr, setExportErr] = useState<string | null>(null);
   const { ask, dialog } = useConfirmDialog();
 
   useEffect(() => {
@@ -106,7 +115,23 @@ export default function AttendanceView({
   });
 
   async function exportXLSX() {
-    const list = filteredRows.map((r) => ({
+    const dari = range.dari || todayStr();
+    const sampai = range.sampai || range.dari || todayStr();
+    if (dari > sampai) {
+      setExportErr("Tanggal 'Dari' tidak boleh lebih besar dari 'Sampai'.");
+      return;
+    }
+    setExporting(true);
+    setExportErr(null);
+    const res = await getAttendanceExport(dari, sampai);
+    setExporting(false);
+    if (!res.success) {
+      setExportErr(res.error);
+      return;
+    }
+
+    const list = res.rows.map((r) => ({
+      TANGGAL: r.tanggal,
       AREA: r.area || "-",
       ROLE: r.role.toUpperCase(),
       "NAMA SPG": r.name,
@@ -124,6 +149,7 @@ export default function AttendanceView({
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(list);
     ws["!cols"] = [
+      { wch: 12 }, // TANGGAL
       { wch: 14 }, // AREA
       { wch: 8 },  // ROLE
       { wch: 26 }, // NAMA
@@ -137,8 +163,8 @@ export default function AttendanceView({
       { wch: 60 }, // URL FOTO CHECK OUT
     ];
     XLSX.utils.book_append_sheet(wb, ws, "DATA ABSENSI");
-    const dStr = new Date().toISOString().slice(0, 10);
-    XLSX.writeFile(wb, `ABSENSI_${dStr}.xlsx`);
+    const fname = `ABSENSI_${dari}_${sampai}.xlsx`;
+    XLSX.writeFile(wb, fname);
   }
 
   async function handleReset(attId: string, name: string) {
@@ -197,14 +223,38 @@ export default function AttendanceView({
         </div>
 
         {isAdmin && (
-          <button
-            type="button"
-            onClick={exportXLSX}
-            className="flex h-11 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 text-[13px] font-semibold text-white transition hover:bg-indigo-700 active:scale-95 shadow-sm"
-          >
-            <Icon name="download" size={18} />
-            Export Absensi (.xlsx)
-          </button>
+          <div className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-3 shadow-sm sm:flex-row sm:items-end">
+            <div className="flex items-center gap-1.5">
+              <label className="text-[11px] font-bold text-slate-500">Dari</label>
+              <input
+                type="date"
+                value={range.dari}
+                onChange={(e) => setRange((p) => ({ ...p, dari: e.target.value }))}
+                className="h-10 rounded-lg border border-slate-200 px-2 text-[13px] font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+            <div className="flex items-center gap-1.5">
+              <label className="text-[11px] font-bold text-slate-500">Sampai</label>
+              <input
+                type="date"
+                value={range.sampai}
+                onChange={(e) => setRange((p) => ({ ...p, sampai: e.target.value }))}
+                className="h-10 rounded-lg border border-slate-200 px-2 text-[13px] font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+            <button
+              type="button"
+              disabled={exporting}
+              onClick={exportXLSX}
+              className="flex h-11 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 text-[13px] font-semibold text-white transition hover:bg-indigo-700 active:scale-95 shadow-sm disabled:opacity-60"
+            >
+              <Icon name="download" size={18} />
+              {exporting ? "Exporting..." : "Export Absensi (.xlsx)"}
+            </button>
+          </div>
+        )}
+        {exportErr && (
+          <p className="rounded-lg bg-rose-50 px-3 py-2.5 text-sm text-rose-700">{exportErr}</p>
         )}
       </div>
 

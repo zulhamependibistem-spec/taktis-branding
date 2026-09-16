@@ -2,7 +2,6 @@ import { getAttendanceOverview } from "@/lib/actions/admin";
 import { getSessionUser } from "@/lib/auth";
 import AdminShell from "@/components/admin/AdminShell";
 import AttendanceView, { type AttRow } from "@/components/admin/AttendanceView";
-import AttendanceImport from "@/app/admin/import/AttendanceImport";
 
 export default async function AdminAttendancePage() {
   const me = await getSessionUser();
@@ -18,10 +17,7 @@ export default async function AdminAttendancePage() {
         </div>
       </header>
       {res.success ? (
-        <div className="flex flex-col gap-6">
-          <AttendanceView rows={rows} isAdmin={isAdmin} />
-          <AttendanceImport />
-        </div>
+        <AttendanceView rows={rows} isAdmin={isAdmin} />
       ) : (
         <p className="rounded-xl border border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-400">
           {res.error}

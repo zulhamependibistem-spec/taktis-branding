@@ -530,127 +530,116 @@ export async function applyUserImport(payload: {
   return { success: true as const, inserted, updated, deactivated };
 }
 
-// ---------- Import Absensi ----------
+// ---------- Export Absensi Rentang Tanggal ----------
 
-export type AttendanceImportRow = {
-  nip: string;
+export type AttendanceExportRow = {
   tanggal: string; // YYYY-MM-DD
-  jamMasuk: string | null; // HH:MM
-  jamKeluar: string | null; // HH:MM
-  lokasi: string;
+  role: string;
+  name: string;
+  nip: string;
+  area: string;
+  status: string;
+  checkInTime: string | null;
+  checkOutTime: string | null;
+  checkInPhoto: string | null;
+  checkOutPhoto: string | null;
+  lat: number | null;
+  lng: number | null;
 };
 
-export type AttendancePreviewRow = AttendanceImportRow & {
-  nama: string;
-  mode: "baru" | "ada" | "tidak_ditemukan";
-  error: string;
-};
-
-function wibToISO(dateStr: string, timeStr: string | null, addDays = 0): string | null {
-  if (!timeStr) return null;
-  const d = new Date(`${dateStr}T${timeStr}:00+07:00`);
-  if (Number.isNaN(d.getTime())) return null;
-  if (addDays) d.setTime(d.getTime() + addDays * 86400000);
-  return d.toISOString();
-}
-
-export async function getAttendanceImportPreview(rows: AttendanceImportRow[], dari: string, sampai: string) {
+export async function getAttendanceExport(dari: string, sampai: string) {
   const user = await getSessionUser();
-  if (!user || user.role !== "admin") return { success: false as const, error: "Akses ditolak." };
+  if (!user || (user.role !== "admin" && user.role !== "pic" && user.role !== "tl"))
+    return { success: false as const, error: "Akses ditolak." };
 
   if (!dari || !sampai || dari > sampai)
     return { success: false as const, error: "Rentang tanggal tidak valid." };
 
   const supabase = createServerClient();
 
-  const { data: users } = await supabase.from("users").select("id, nip, full_name, status");
-  const byNip = new Map<string, { id: string; full_name: string; status: string }>();
-  (users ?? []).forEach((u) => {
-    if (u.nip) byNip.set(u.nip.trim(), u);
-  });
+  let query = supabase
+    .from("users")
+    .select("id, full_name, nip, status, supervisor_id, role, area")
+    .in("role", ["spg", "tl"])
+    .in("status", ["active", "backup"]);
 
-  const within = rows.filter((r) => r.tanggal >= dari && r.tanggal <= sampai);
-  const outside = rows.length - within.length;
-
-  const preview: AttendancePreviewRow[] = [];
-  const idSet = new Set<string>();
-  for (const r of within) {
-    const u = byNip.get(r.nip.trim());
-    if (!u) {
-      preview.push({ ...r, nama: "", mode: "tidak_ditemukan", error: "NIP tidak ditemukan" });
-      continue;
-    }
-    idSet.add(u.id);
-    preview.push({ ...r, nama: u.full_name, mode: "baru", error: "" });
+  if (user.role === "tl") {
+    query = query.eq("supervisor_id", user.id);
+  } else if (user.role === "pic") {
+    const ids = await picTeamUserIds(supabase, user.id);
+    query = query.in("id", Array.from(ids));
   }
 
-  if (idSet.size) {
-    const { data: att } = await supabase
+  const { data: spgs, error } = await query;
+  if (error) return { success: false as const, error: "Gagal memuat SPG." };
+
+  const ids = (spgs ?? []).map((s: { id: string }) => s.id);
+  let atts: {
+    user_id: string;
+    report_date: string;
+    status: string;
+    check_in_time: string | null;
+    check_out_time: string | null;
+    check_in_photo_url: string | null;
+    check_out_photo_url: string | null;
+    check_in_lat: number | null;
+    check_in_lng: number | null;
+  }[] = [];
+  if (ids.length) {
+    const { data: resAtt } = await supabase
       .from("attendance")
-      .select("user_id, report_date")
-      .in("user_id", Array.from(idSet))
+      .select(
+        "user_id, report_date, status, check_in_time, check_out_time, check_in_photo_url, check_out_photo_url, check_in_lat, check_in_lng"
+      )
+      .in("user_id", ids)
       .gte("report_date", dari)
       .lte("report_date", sampai);
-    const existingKeys = new Set((att ?? []).map((a) => `${a.user_id}|${a.report_date}`));
-    preview.forEach((p) => {
-      const u = byNip.get(p.nip.trim());
-      if (u && existingKeys.has(`${u.id}|${p.tanggal}`)) p.mode = "ada";
+    atts = (resAtt ?? []) as typeof atts;
+  }
+
+  const paths = atts
+    .flatMap((a) => [a.check_in_photo_url, a.check_out_photo_url])
+    .filter((p): p is string => Boolean(p));
+  const urlMap = new Map<string, string>();
+  if (paths.length) {
+    paths.forEach((p) => {
+      const { data: pUrl } = supabase.storage.from("attendance-photos").getPublicUrl(p);
+      if (pUrl?.publicUrl) urlMap.set(p, pUrl.publicUrl);
     });
   }
 
-  return { success: true as const, preview, inRange: within.length, outside };
-}
-
-export async function applyAttendanceImport(rows: AttendanceImportRow[]) {
-  const user = await getSessionUser();
-  if (!user || user.role !== "admin") return { success: false as const, error: "Akses ditolak." };
-
-  const supabase = createServerClient();
-  const { data: users } = await supabase.from("users").select("id, nip");
-  const byNip = new Map<string, string>();
-  (users ?? []).forEach((u) => {
-    if (u.nip) byNip.set(u.nip.trim(), u.id);
+  const attByUser: Record<string, Record<string, (typeof atts)[number]>> = {};
+  atts.forEach((a) => {
+    (attByUser[a.user_id] ??= {})[a.report_date] = a;
   });
 
-  let inserted = 0;
-  let skipped = 0;
-  let failed = 0;
-  for (const r of rows) {
-    const userId = byNip.get(r.nip.trim());
-    if (!userId) {
-      failed++;
-      continue;
-    }
-
-    const { data: ex } = await supabase
-      .from("attendance")
-      .select("id")
-      .eq("user_id", userId)
-      .eq("report_date", r.tanggal)
-      .maybeSingle();
-    if (ex) {
-      skipped++;
-      continue;
-    }
-
-    const checkIn = wibToISO(r.tanggal, r.jamMasuk);
-    let checkOut = wibToISO(r.tanggal, r.jamKeluar);
-    if (checkOut && checkIn && checkOut <= checkIn) checkOut = wibToISO(r.tanggal, r.jamKeluar, 1);
-
-    const { error } = await supabase.from("attendance").insert({
-      user_id: userId,
-      report_date: r.tanggal,
-      check_in_time: checkIn,
-      check_out_time: checkOut,
-      location_name: r.lokasi || null,
-      status: checkOut ? "checked_out" : checkIn ? "checked_in" : "not_checked_in",
-    });
-    if (error) {
-      failed++;
-      continue;
-    }
-    inserted++;
+  const dates: string[] = [];
+  const start = new Date(`${dari}T00:00:00`);
+  const end = new Date(`${sampai}T00:00:00`);
+  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    dates.push(d.toISOString().slice(0, 10));
   }
 
-  return { success: true as const, inserted, skipped, failed };
+  const rows: AttendanceExportRow[] = [];
+  for (const s of spgs ?? []) {
+    for (const d of dates) {
+      const a = attByUser[s.id]?.[d];
+      rows.push({
+        tanggal: d,
+        role: s.role,
+        name: s.full_name,
+        nip: s.nip ?? "-",
+        area: s.area ?? "—",
+        status: a?.status ?? "not_checked_in",
+        checkInTime: a?.check_in_time ?? null,
+        checkOutTime: a?.check_out_time ?? null,
+        checkInPhoto: a?.check_in_photo_url ? urlMap.get(a.check_in_photo_url) ?? a.check_in_photo_url : null,
+        checkOutPhoto: a?.check_out_photo_url ? urlMap.get(a.check_out_photo_url) ?? a.check_out_photo_url : null,
+        lat: a?.check_in_lat ?? null,
+        lng: a?.check_in_lng ?? null,
+      });
+    }
+  }
+
+  return { success: true as const, rows, dates };
 }
