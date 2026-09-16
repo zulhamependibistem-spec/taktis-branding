@@ -61,11 +61,38 @@ export async function POST(req: NextRequest) {
   // Upload foto
   const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
   const path = `${action}/${user.id}/${Date.now()}.${ext}`;
-  const { error: upErr } = await supabase.storage
-    .from("attendance-photos")
-    .upload(path, file, { contentType: file.type });
+  const bucket = supabase.storage.from("attendance-photos");
+  const { error: upErr } = await bucket.upload(path, file, { contentType: file.type });
   if (upErr) {
     return NextResponse.json({ error: `Gagal mengunggah foto. ${upErr.message}` }, { status: 500 });
+  }
+
+  // Re-check SEBELUM insert/update: cegah foto yatim jika dua request dobel masuk berbarengan
+  // (constraint UNIQUE user_id+report_date menahan duplikat, tapi foto kedua sudah ter-upload).
+  const { data: current } = await supabase
+    .from("attendance")
+    .select("id, user_id, check_in_time, check_out_time")
+    .eq("user_id", user.id)
+    .eq("report_date", today)
+    .limit(1);
+
+  async function rejectAfterUpload(status: number, msg: string) {
+    await bucket.remove([path]);
+    return NextResponse.json({ error: msg }, { status });
+  }
+
+  if (action === "in") {
+    if (current?.[0]?.check_in_time) {
+      return rejectAfterUpload(409, "Sudah check-in hari ini.");
+    }
+  } else {
+    const cur = current?.[0];
+    if (!cur?.check_in_time) {
+      return rejectAfterUpload(400, "Belum check-in hari ini.");
+    }
+    if (cur.check_out_time) {
+      return rejectAfterUpload(409, "Sudah check-out hari ini.");
+    }
   }
 
   if (action === "in") {
@@ -103,7 +130,10 @@ export async function POST(req: NextRequest) {
       .select("id, check_in_time, check_out_time, status, location_name")
       .single();
 
-    if (error) return NextResponse.json({ error: "Gagal menyimpan absensi." }, { status: 500 });
+    if (error) {
+      await bucket.remove([path]);
+      return NextResponse.json({ error: "Gagal menyimpan absensi." }, { status: 409 });
+    }
     return NextResponse.json({ attendance: data });
   }
 
@@ -117,9 +147,11 @@ export async function POST(req: NextRequest) {
   const existing = outRows?.[0];
 
   if (getErr || !existing?.check_in_time) {
+    await bucket.remove([path]);
     return NextResponse.json({ error: "Belum check-in hari ini." }, { status: 400 });
   }
   if (existing.check_out_time) {
+    await bucket.remove([path]);
     return NextResponse.json({ error: "Sudah check-out hari ini." }, { status: 409 });
   }
 
@@ -130,6 +162,9 @@ export async function POST(req: NextRequest) {
     .select("id, check_in_time, check_out_time, status")
     .single();
 
-  if (error) return NextResponse.json({ error: "Gagal menyimpan check-out." }, { status: 500 });
+  if (error) {
+    await bucket.remove([path]);
+    return NextResponse.json({ error: "Gagal menyimpan check-out." }, { status: 500 });
+  }
   return NextResponse.json({ attendance: data });
 }

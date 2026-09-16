@@ -84,7 +84,7 @@ export default async function RiwayatPage() {
               </div>
               {hasPhoto && (
                 <p className="mt-2 flex items-center gap-1 text-[11px] font-medium text-slate-400">
-                  <Icon name="camera" size={12} /> Foto terverifikasi TL
+                  <Icon name="camera" size={12} /> Foto verifikasi Admin
                 </p>
               )}
             </div>

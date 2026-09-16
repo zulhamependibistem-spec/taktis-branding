@@ -430,14 +430,16 @@ export async function applyUserImport(payload: {
 
   const { data: existingAll, error: exErr } = await supabase
     .from("users")
-    .select("id, nip, full_name, role");
+    .select("id, nip, full_name, role, phone");
   if (exErr) return { success: false as const, error: "Gagal memuat users." };
 
-  const byNip = new Map<string, { id: string; role: string }>();
-  const byName = new Map<string, { id: string; role: string }>();
+  const byNip = new Map<string, { id: string; role: string; phone?: string | null }>();
+  const byName = new Map<string, { id: string; role: string; phone?: string | null }>();
+  const byPhone = new Map<string, string>();
   (existingAll ?? []).forEach((u) => {
     if (u.nip) byNip.set(u.nip.trim(), u);
     if (u.full_name) byName.set(u.full_name.trim().toUpperCase(), u);
+    if (u.phone) byPhone.set(u.phone.replace(/\D/g, ""), u.id);
   });
 
   const tlByName = new Map<string, string>();
@@ -457,7 +459,9 @@ export async function applyUserImport(payload: {
 
   let inserted = 0;
   let updated = 0;
+  let skipped = 0;
   const seen = new Set<string>();
+  const seenPhone = new Set<string>();
   for (const r of payload.rows) {
     const nip = r.nip.trim();
     const nama = r.nama.trim();
@@ -473,6 +477,18 @@ export async function applyUserImport(payload: {
     const supervisorId = role === "spg" ? tlIdByName(namaTl) : null;
 
     const cur = (nip ? byNip.get(nip) : null) ?? byName.get(nama.toUpperCase());
+
+    // Deteksi konflik NIP/HP: skip, jangan buat import gagal total.
+    const phoneKey = phone.replace(/\D/g, "");
+    const phoneOwner = phoneKey.length >= 8 ? byPhone.get(phoneKey) ?? null : null;
+    if (
+      phoneKey.length >= 8 &&
+      ((phoneOwner && phoneOwner !== cur?.id) || seenPhone.has(phoneKey))
+    ) {
+      skipped++;
+      continue;
+    }
+    if (phoneKey.length >= 8) seenPhone.add(phoneKey);
 
     if (cur) {
       const patch: Record<string, unknown> = { status: r.status ?? "active" };
@@ -527,7 +543,7 @@ export async function applyUserImport(payload: {
     deactivated++;
   }
 
-  return { success: true as const, inserted, updated, deactivated };
+  return { success: true as const, inserted, updated, deactivated, skipped };
 }
 
 // ---------- Export Absensi Rentang Tanggal ----------
@@ -614,9 +630,9 @@ export async function getAttendanceExport(dari: string, sampai: string) {
   });
 
   const dates: string[] = [];
-  const start = new Date(`${dari}T00:00:00`);
-  const end = new Date(`${sampai}T00:00:00`);
-  for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+  const start = new Date(`${dari}T00:00:00Z`);
+  const end = new Date(`${sampai}T00:00:00Z`);
+  for (let d = new Date(start.getTime()); d <= end; d.setUTCDate(d.getUTCDate() + 1)) {
     dates.push(d.toISOString().slice(0, 10));
   }
 

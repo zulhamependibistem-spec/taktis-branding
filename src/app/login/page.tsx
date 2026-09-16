@@ -26,7 +26,7 @@ export default async function LoginPage({
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center gap-5">
           <Logo imgHeight={72} />
-          <p className="text-sm text-slate-500">Sistem Absensi &amp; Laporan SPG</p>
+          <p className="text-sm text-slate-500">Absensi SPG · TAKTIS Branding</p>
         </div>
 
         <form

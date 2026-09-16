@@ -5,10 +5,12 @@ import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { key: "attendance", href: "/admin/attendance", label: "Attendance", icon: "schedule" as const },
-  { key: "users", href: "/admin/users", label: "Users", icon: "users" as const },
-  { key: "import", href: "/admin/import", label: "Import DB", icon: "download" as const },
+  { key: "attendance", href: "/admin/attendance", label: "Attendance", icon: "schedule" as const, adminOnly: false },
+  { key: "users", href: "/admin/users", label: "Users", icon: "users" as const, adminOnly: true },
+  { key: "import", href: "/admin/import", label: "Import DB", icon: "download" as const, adminOnly: true },
 ];
+
+const visibleNav = async (role: string) => NAV.filter((item) => !item.adminOnly || role === "admin");
 
 async function logoutAction() {
   "use server";
@@ -26,7 +28,9 @@ export default async function AdminShell({
   const me = await getSessionUser();
   if (!me) redirect("/login");
 
-  const desktopNav = NAV.map((item) => {
+  const items = await visibleNav(me.role);
+
+  const desktopNav = items.map((item) => {
     const isActive = item.key === active;
     return (
       <Link
@@ -43,7 +47,7 @@ export default async function AdminShell({
     );
   });
 
-  const mobileNav = NAV.map((item) => {
+  const mobileNav = items.map((item) => {
     const isActive = item.key === active;
     return (
       <Link
@@ -73,9 +77,7 @@ export default async function AdminShell({
           />
           <div>
             <p className="text-[14px] font-bold text-slate-900 leading-tight">BISTEM JAYA MANDIRI</p>
-            <p className="text-[11px] font-semibold text-indigo-600 uppercase tracking-wide">
-              {me.role === "pic" ? "PIC Portal" : "Admin Portal"}
-            </p>
+            <p className="text-[11px] font-semibold text-indigo-600 uppercase tracking-wide">Admin Portal</p>
           </div>
         </div>
 

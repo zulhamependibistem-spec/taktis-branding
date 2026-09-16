@@ -174,7 +174,9 @@ export default function ImportManager() {
     if (res.success) {
       setResultUsers({
         ok: true,
-        msg: `Selesai! ${res.inserted} user baru ditambah, ${res.updated} user di-update, ${res.deactivated} user dinonaktifkan.`,
+        msg: `Selesai! ${res.inserted} user baru ditambah, ${res.updated} user di-update, ${res.deactivated} user dinonaktifkan${
+          res.skipped ? `, ${res.skipped} dilewati (NIP/HP duplikat)` : "."
+        }`,
       });
       setU({ fileName: "", rows: null, lepas: [], nonaktifNips: [] });
     } else {
