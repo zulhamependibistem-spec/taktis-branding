@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import * as XLSX from "xlsx";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
-import AttendanceImport from "./AttendanceImport";
 import {
   getUserImportPreview,
   applyUserImport,
@@ -466,9 +465,6 @@ export default function ImportManager() {
           </div>
         )}
       </div>
-
-      {/* ===== Import Absensi ===== */}
-      <AttendanceImport />
     </div>
   );
 }
