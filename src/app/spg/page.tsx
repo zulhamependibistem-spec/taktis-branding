@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { getSessionUser, logoutService } from "@/lib/auth";
+import { getSessionUser, hadSessionCookie, logoutService } from "@/lib/auth";
 import { createServerClient } from "@/lib/supabase/server";
 import Logo from "@/components/brand/Logo";
 import { Icon } from "@/components/ui/Icon";
@@ -11,12 +11,12 @@ import { todayWIB, dateWIBLabel } from "@/lib/date";
 async function logoutAction() {
   "use server";
   await logoutService();
-  redirect("/login");
+  redirect("/login?reason=logout");
 }
 
 export default async function SpgHome() {
   const me = await getSessionUser();
-  if (!me) redirect("/login");
+  if (!me) redirect((await hadSessionCookie()) ? "/login?reason=expired" : "/login");
 
   const supabase = createServerClient();
   const [meRes, attRes] = await Promise.all([

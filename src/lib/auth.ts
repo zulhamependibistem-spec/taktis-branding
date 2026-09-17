@@ -91,3 +91,10 @@ export async function logoutService() {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE);
 }
+
+// Membedakan "baru buka aplikasi" dari "sesi habis", supaya halaman login bisa
+// memberi tahu kenapa user diminta masuk lagi, bukan menampilkan form kosong.
+export async function hadSessionCookie() {
+  const cookieStore = await cookies();
+  return Boolean(cookieStore.get(SESSION_COOKIE)?.value);
+}

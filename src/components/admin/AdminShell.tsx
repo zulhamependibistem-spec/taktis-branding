@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getSessionUser, logoutService } from "@/lib/auth";
+import { getSessionUser, hadSessionCookie, logoutService } from "@/lib/auth";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +15,7 @@ const visibleNav = async (role: string) => NAV.filter((item) => !item.adminOnly 
 async function logoutAction() {
   "use server";
   await logoutService();
-  redirect("/login");
+  redirect("/login?reason=logout");
 }
 
 export default async function AdminShell({
@@ -26,7 +26,7 @@ export default async function AdminShell({
   children: React.ReactNode;
 }) {
   const me = await getSessionUser();
-  if (!me) redirect("/login");
+  if (!me) redirect((await hadSessionCookie()) ? "/login?reason=expired" : "/login");
 
   const items = await visibleNav(me.role);
 

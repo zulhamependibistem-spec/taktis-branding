@@ -15,6 +15,22 @@ Nothing else. There is no PIC or Team Leader surface: roles in the DB are `spg`
 and `admin` only, and `/tl/*` was removed so the UI cannot imply a feature the
 product does not have.
 
+## Design Read & dials
+
+> Reading this as: an operations attendance tool for field staff and one admin,
+> in a restrained utilitarian language, dial ENERGY 1 / RHYTHM 1 / MOTION 1.
+
+- **ENERGY 1.** Nobody opens this app for delight. They open it to check in and
+  get back to work. Calm surfaces, one action per screen.
+- **RHYTHM 1.** Every screen is one job: status, check-in, history, profile,
+  attendance table, users, import. Deliberately uniform; a page that varies its
+  composition here would be inventing decoration, not information.
+- **MOTION 1.** Press feedback and busy spinners only. No scroll reveals, no
+  loops, nothing that moves without the user moving first.
+
+The login screen has one focal point: the NIP field and its "Masuk" button.
+Everything above and below it (logo group, notice, footer) defers to that.
+
 ## Color
 
 | Token | Use |
@@ -33,7 +49,8 @@ Rules:
   not allowed for text; the only exception is a purely decorative separator dot.
 - Control boundaries (inputs, selects, secondary buttons) use `border-slate-500`
   so the shape reads even when empty. `slate-200`/`slate-300` sit under 3:1 and
-  are reserved for card edges that a shadow already defines.
+  are reserved for non-interactive edges: card edges a shadow already defines,
+  and tinted notice/error banners where the text carries the meaning.
 - Focus is a 2px solid indigo ring (`:focus-visible` outline globally, or
   `focus:ring-2 focus:ring-indigo-600` on inputs). No translucent `ring-*/20`
   on white, it disappears.
@@ -79,6 +96,9 @@ ease-out on color/border, spring easing for entrances. Nothing loops.
   pill.
 - Em dashes are not used in UI strings; use `-` or split the sentence.
 - Empty states say what to do next, not just that the list is empty.
+- An error names the next action, not only the failure: the login error adds
+  "Hubungi Admin atau SPV jika NIP Anda belum terdaftar."
+- A placeholder shows the format and never repeats the label above it.
 - No emoji, no fake testimonials, no invented numbers. Every figure is a real
   row from Supabase for the signed-in user or the selected period.
 
@@ -100,4 +120,10 @@ single card, without lowering contrast for the input or the button above it.
 - `src/app/spg/loading.tsx` and `src/app/admin/loading.tsx` render a centered
   spinner plus one line of Indonesian text. Route transitions never show a
   blank screen.
-- Errors are inline (`role="alert"`, rose surface) and keep the form usable.
+- Busy states inside controls use the same spinner, so the button never just
+  fades (a faded indigo button drops white-on-indigo to 1.93:1, below AA).
+- Errors are inline (`role="alert"`, rose surface, warning icon) and keep the
+  form usable.
+- The login screen distinguishes a fresh visit (`/login`, no notice) from a
+  finished session (`/login?reason=expired`, "Sesi berakhir") and an explicit
+  logout (`/login?reason=logout`, "Anda telah keluar").

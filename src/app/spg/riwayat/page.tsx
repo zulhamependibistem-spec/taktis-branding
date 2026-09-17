@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getSessionUser } from "@/lib/auth";
+import { getSessionUser, hadSessionCookie } from "@/lib/auth";
 import { createServerClient } from "@/lib/supabase/server";
 import { Icon } from "@/components/ui/Icon";
 import StatusPill from "@/components/ui/StatusPill";
@@ -18,7 +18,7 @@ function fmtDate(d: string) {
 
 export default async function RiwayatPage() {
   const me = await getSessionUser();
-  if (!me) redirect("/login");
+  if (!me) redirect((await hadSessionCookie()) ? "/login?reason=expired" : "/login");
 
   const supabase = createServerClient();
   const { data } = await supabase

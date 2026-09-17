@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getSessionUser, logoutService } from "@/lib/auth";
+import { getSessionUser, hadSessionCookie, logoutService } from "@/lib/auth";
 import { getAttendanceToday } from "@/lib/actions/attendance";
 import { dateWIBLabel } from "@/lib/date";
 import { Icon } from "@/components/ui/Icon";
@@ -10,12 +10,12 @@ import CheckIn from "../CheckIn";
 async function logoutAction() {
   "use server";
   await logoutService();
-  redirect("/login");
+  redirect("/login?reason=logout");
 }
 
 export default async function SpgAbsenPage() {
   const me = await getSessionUser();
-  if (!me) redirect("/login");
+  if (!me) redirect((await hadSessionCookie()) ? "/login?reason=expired" : "/login");
 
   const res = await getAttendanceToday();
   const attendance = res.success ? res.attendance : null;

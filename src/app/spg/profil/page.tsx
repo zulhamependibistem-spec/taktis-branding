@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getSessionUser, logoutService } from "@/lib/auth";
+import { getSessionUser, hadSessionCookie, logoutService } from "@/lib/auth";
 import { createServerClient } from "@/lib/supabase/server";
 import { Icon } from "@/components/ui/Icon";
 import BottomNav from "@/components/ui/BottomNav";
@@ -9,12 +9,12 @@ import AvatarUpload from "./AvatarUpload";
 async function logoutAction() {
   "use server";
   await logoutService();
-  redirect("/login");
+  redirect("/login?reason=logout");
 }
 
 export default async function ProfilPage() {
   const me = await getSessionUser();
-  if (!me) redirect("/login");
+  if (!me) redirect((await hadSessionCookie()) ? "/login?reason=expired" : "/login");
 
   const supabase = createServerClient();
   const { data } = await supabase
