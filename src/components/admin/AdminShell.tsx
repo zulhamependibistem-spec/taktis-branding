@@ -76,8 +76,8 @@ export default async function AdminShell({
             className="h-10 w-10 rounded-xl object-cover shadow-sm ring-1 ring-slate-200"
           />
           <div>
-            <p className="text-[14px] font-bold text-slate-900 leading-tight">BISTEM JAYA MANDIRI</p>
-            <p className="text-[11px] font-semibold text-indigo-600 uppercase tracking-wide">Admin Portal</p>
+            <p className="text-[14px] font-bold text-slate-900 leading-tight">Bistem Jaya Mandiri</p>
+            <p className="text-[11px] font-semibold text-indigo-600">Admin Portal</p>
           </div>
         </div>
 
@@ -90,7 +90,7 @@ export default async function AdminShell({
             </div>
             <div className="min-w-0">
               <p className="truncate text-[13px] font-semibold text-slate-900">{me.full_name}</p>
-              <p className="text-[11px] uppercase tracking-wide text-slate-400">{me.role}</p>
+              <p className="text-[11px] text-slate-500">{me.role}</p>
             </div>
           </div>
           <form action={logoutAction}>
@@ -116,7 +116,7 @@ export default async function AdminShell({
                 alt="Bistem Logo"
                 className="h-8 w-8 rounded-xl object-cover shadow-sm ring-1 ring-slate-200"
               />
-              <span className="text-[14px] font-bold text-slate-900">BISTEM JAYA MANDIRI</span>
+              <span className="text-[14px] font-bold text-slate-900">Bistem Jaya Mandiri</span>
             </div>
             <form action={logoutAction}>
               <button

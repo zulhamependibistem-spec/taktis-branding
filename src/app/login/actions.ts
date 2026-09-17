@@ -12,7 +12,6 @@ export async function loginAction(formData: FormData): Promise<
     return { success: false, error: result.error } as const;
   }
   const { role } = result.user;
-  const redirect =
-    role === "admin" || role === "pic" ? "/admin" : role === "tl" ? "/tl" : "/spg";
+  const redirect = role === "admin" || role === "pic" ? "/admin" : "/spg";
   return { success: true, redirect } as const;
 }

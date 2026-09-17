@@ -51,8 +51,8 @@ export default async function RiwayatPage() {
 
       <main className="flex flex-col gap-2 p-4">
         {rows.length === 0 && (
-          <p className="pt-16 text-center text-sm text-slate-400">
-            Belum ada catatan absensi.
+          <p className="pt-16 text-center text-sm text-slate-500">
+            Belum ada catatan absensi. Absen dulu lewat menu Absen, riwayat akan tampil di sini.
           </p>
         )}
 
@@ -66,24 +66,24 @@ export default async function RiwayatPage() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-xl bg-slate-50 px-3 py-2.5">
-                  <p className="flex items-center gap-1 text-[11px] font-semibold text-slate-400">
+                  <p className="flex items-center gap-1 text-[11px] font-semibold text-slate-500">
                     <Icon name="logout" size={12} /> Check-in
                   </p>
                   <p className="mt-0.5 font-mono text-[15px] font-bold text-slate-800">
-                    {r.check_in_time ? timeWIB(r.check_in_time) : "—"}
+                    {r.check_in_time ? timeWIB(r.check_in_time) : "-"}
                   </p>
                 </div>
                 <div className="rounded-xl bg-slate-50 px-3 py-2.5">
-                  <p className="flex items-center gap-1 text-[11px] font-semibold text-slate-400">
+                  <p className="flex items-center gap-1 text-[11px] font-semibold text-slate-500">
                     <Icon name="logout" size={12} className="rotate-180" /> Check-out
                   </p>
                   <p className="mt-0.5 font-mono text-[15px] font-bold text-slate-800">
-                    {r.check_out_time ? timeWIB(r.check_out_time) : "—"}
+                    {r.check_out_time ? timeWIB(r.check_out_time) : "-"}
                   </p>
                 </div>
               </div>
               {hasPhoto && (
-                <p className="mt-2 flex items-center gap-1 text-[11px] font-medium text-slate-400">
+                <p className="mt-2 flex items-center gap-1 text-[11px] font-medium text-slate-500">
                   <Icon name="camera" size={12} /> Foto verifikasi Admin
                 </p>
               )}

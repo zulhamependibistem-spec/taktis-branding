@@ -19,7 +19,7 @@ html {
   --ease-out-smooth: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Admin/PIC portal (desktop-first): auto scale down so it feels native instead of zoomed.
+/* Admin portal (desktop-first): auto scale down so it feels native instead of zoomed.
    FitPanel.js reads --admin-zoom to compensate viewport math for the exact screen fill. */
 :root {
   --admin-zoom: 0.75;
@@ -52,17 +52,8 @@ a:active,
   outline-offset: 2px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.logo-spin {
-  animation: logo-spin 5s linear infinite;
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 body {

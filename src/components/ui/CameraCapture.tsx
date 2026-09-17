@@ -122,9 +122,7 @@ export default function CameraCapture({
         style={{ transform: "scaleX(-1)" }}
       />
       <div className="flex items-center justify-between gap-2 p-3">
-        <p className="text-[11px] font-bold uppercase tracking-wide text-slate-400">
-          Foto live · {label}
-        </p>
+        <p className="text-[11px] font-semibold text-slate-500">Foto live · {label}</p>
         <button
           type="button"
           onClick={capture}

@@ -112,16 +112,10 @@ export default function CheckIn({ initial, userId }: { initial: Attendance; user
         )}
 
         {!isCheckedOut && (
-          <div className="mb-3 flex items-center justify-between rounded-xl bg-slate-100/70 px-3.5 py-2">
-            <span className="flex items-center gap-2 text-[12px] font-semibold text-slate-700">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              GPS &amp; Geolocation
-            </span>
-            <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 font-mono text-[11px] font-bold text-emerald-700">
-              High Accuracy Active
+          <div className="mb-3 flex items-center gap-2 rounded-xl bg-slate-100/70 px-3.5 py-2">
+            <Icon name="storefront" size={16} className="text-slate-500" />
+            <span className="text-[12px] font-medium text-slate-600">
+              Lokasi GPS diambil otomatis saat tombol check-in ditekan.
             </span>
           </div>
         )}
@@ -132,7 +126,7 @@ export default function CheckIn({ initial, userId }: { initial: Attendance; user
               <div className="mb-3 flex items-center justify-between rounded-xl bg-slate-50 p-3">
                 <div>
                   <p className="text-sm font-semibold text-emerald-600">Foto live siap</p>
-                  <p className="text-[11px] text-slate-400">dengan timestamp tervalidasi.</p>
+                  <p className="text-[11px] text-slate-500">dengan timestamp tervalidasi.</p>
                 </div>
                 <div className="flex items-center gap-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -140,7 +134,7 @@ export default function CheckIn({ initial, userId }: { initial: Attendance; user
                   <button
                     type="button"
                     onClick={() => setPhoto(null)}
-                    className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-600"
+                    className="rounded-lg border border-slate-500 px-3 py-2 text-xs font-semibold text-slate-600"
                   >
                     Ulangi
                   </button>
@@ -149,7 +143,7 @@ export default function CheckIn({ initial, userId }: { initial: Attendance; user
             ) : (
               <CameraCapture
                 key={String(isCheckedIn)}
-                label={isCheckedIn ? "CHECK-OUT" : "CHECK-IN"}
+                label={isCheckedIn ? "Check-Out" : "Check-In"}
                 onPhoto={(preview, blob) => setPhoto({ preview, blob })}
               />
             )}
@@ -162,7 +156,7 @@ export default function CheckIn({ initial, userId }: { initial: Attendance; user
                 className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 text-[16px] font-semibold text-white transition hover:bg-indigo-700 active:scale-95 disabled:opacity-50"
               >
                 <Icon name="camera" size={22} />
-                {busy ? "Memproses..." : "CHECK IN SEKARANG"}
+                {busy ? "Memproses..." : "Check In Sekarang"}
               </button>
             )}
 
@@ -174,7 +168,7 @@ export default function CheckIn({ initial, userId }: { initial: Attendance; user
                 className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-slate-900 text-[16px] font-semibold text-white transition hover:bg-slate-800 active:scale-95 disabled:opacity-50"
               >
                 <Icon name="logout" size={22} />
-                {busy ? "Memproses..." : "CHECK OUT"}
+                {busy ? "Memproses..." : "Check Out"}
               </button>
             )}
           </>

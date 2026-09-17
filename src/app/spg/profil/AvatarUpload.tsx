@@ -71,7 +71,7 @@ export default function AvatarUpload({
             /* eslint-disable-next-line @next/next/no-img-element */
             <img src={avatarUrl} alt={name} className="h-full w-full object-cover" />
           ) : (
-            <Icon name="woman" size={38} filled />
+            <Icon name="person" size={38} filled />
           )}
           <span className="absolute inset-0 flex items-center justify-center bg-black/40 text-white opacity-0 transition group-hover:opacity-100">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

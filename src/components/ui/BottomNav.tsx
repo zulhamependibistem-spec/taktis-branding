@@ -22,7 +22,7 @@ export default function BottomNav({
               href={item.href}
               className={cn(
                 "flex flex-col items-center justify-center gap-1 rounded-xl px-1.5 text-[12px] font-semibold transition active:scale-90",
-                isActive ? "bg-indigo-600/10 text-indigo-600" : "text-slate-400 hover:text-slate-600"
+                isActive ? "bg-indigo-600/10 text-indigo-600" : "text-slate-500 hover:text-slate-700"
               )}
             >
               <Icon name={item.icon} size={22} filled={isActive} />

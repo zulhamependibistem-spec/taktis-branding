@@ -14,11 +14,7 @@ export default function Logo({
         className="w-auto object-contain"
       />
 
-      <span
-        className="logo-spin inline-flex shrink-0 text-indigo-600"
-        style={{ animationDuration: "8s" }}
-        aria-hidden="true"
-      >
+      <span aria-hidden="true" className="inline-flex shrink-0 text-indigo-600">
         <svg
           viewBox="0 0 24 24"
           width={xSize}

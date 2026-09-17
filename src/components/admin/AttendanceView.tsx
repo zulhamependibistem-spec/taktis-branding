@@ -16,7 +16,6 @@ export type AttRow = {
   name: string;
   nip: string | null;
   area: string;
-  tl: string;
   status: string;
   checkInTime: string | null;
   checkOutTime: string | null;
@@ -25,15 +24,6 @@ export type AttRow = {
   lat: number | null;
   lng: number | null;
 };
-
-function initials(name: string) {
-  return String(name)
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-}
 
 function todayStr() {
   const d = new Date();
@@ -66,15 +56,15 @@ function PhotoCell({
         // eslint-disable-next-line @next/next/no-img-element
         <img src={photo} alt={label} className="h-11 w-11 shrink-0 rounded-lg object-cover" />
       ) : (
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-400">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
           <Icon name="camera" size={18} />
         </div>
       )}
       <div className="min-w-0">
-        <p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">{label}</p>
-        <p className="font-mono text-[13px] font-semibold text-slate-800">{time ? `${time} WIB` : "—"}</p>
+        <p className="text-[10px] font-bold text-slate-500">{label}</p>
+        <p className="font-mono text-[13px] font-semibold text-slate-800">{time ? `${time} WIB` : "-"}</p>
       </div>
-      {!photo && <span className="ml-auto text-[10px] font-semibold text-slate-400">belum ada foto</span>}
+      {!photo && <span className="ml-auto text-[10px] font-semibold text-slate-500">belum ada foto</span>}
     </button>
   );
 }
@@ -230,7 +220,7 @@ export default function AttendanceView({
                 type="date"
                 value={range.dari}
                 onChange={(e) => setRange((p) => ({ ...p, dari: e.target.value }))}
-                className="h-10 rounded-lg border border-slate-200 px-2 text-[13px] font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="h-10 rounded-lg border border-slate-500 px-2 text-[13px] font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600"
               />
             </div>
             <div className="flex items-center gap-1.5">
@@ -239,7 +229,7 @@ export default function AttendanceView({
                 type="date"
                 value={range.sampai}
                 onChange={(e) => setRange((p) => ({ ...p, sampai: e.target.value }))}
-                className="h-10 rounded-lg border border-slate-200 px-2 text-[13px] font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="h-10 rounded-lg border border-slate-500 px-2 text-[13px] font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-600"
               />
             </div>
             <button
@@ -293,7 +283,7 @@ export default function AttendanceView({
       </div>
 
       {filteredRows.length === 0 && (
-        <p className="rounded-xl border border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-400">
+        <p className="rounded-xl border border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-500">
           {filter === "hadir"
             ? "Belum ada yang absen hari ini."
             : filter === "belum"
@@ -317,17 +307,10 @@ export default function AttendanceView({
                     off ? "bg-slate-100 text-slate-500" : "bg-indigo-600/10 text-indigo-600"
                   )}
                 >
-                  {r.role === "tl" ? initials(r.name) : <Icon name="woman" size={20} filled />}
+                  <Icon name="person" size={20} filled />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="truncate text-sm font-bold text-slate-900">
-                    {r.name}
-                    {r.role === "tl" && (
-                      <span className="ml-2 rounded-full bg-slate-800 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-                        Team Leader
-                      </span>
-                    )}
-                  </h3>
+                  <h3 className="truncate text-sm font-bold text-slate-900">{r.name}</h3>
                   <p className="truncate text-[12px] text-slate-500">
                     {r.nip && <span className="mr-1.5 font-mono">{r.nip}</span>}
                     {r.area}
@@ -339,7 +322,7 @@ export default function AttendanceView({
                     <p className="mt-0.5 font-mono text-[10px] font-medium text-amber-600">{timeWIB(r.checkInTime)} WIB</p>
                   )}
                   {r.checkOutTime && (
-                    <p className="mt-0.5 font-mono text-[10px] font-medium text-slate-400">
+                    <p className="mt-0.5 font-mono text-[10px] font-medium text-slate-500">
                       {r.checkInTime ? `${timeWIB(r.checkInTime)} → ` : ""}
                       {timeWIB(r.checkOutTime)} WIB
                     </p>

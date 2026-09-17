@@ -237,7 +237,7 @@ export default function ImportManager() {
             </label>
             {u.fileName && <span className="truncate font-mono text-[12px] text-emerald-600">{u.fileName}</span>}
           </div>
-          <p className="text-[12px] text-slate-400">
+          <p className="text-[12px] text-slate-500">
             Dapat menggunakan file <span className="font-mono">DATABASE M4</span> atau template kosong di atas.
             Sistem otomatis mencocokkan via NIP &amp; Nama Lengkap.
           </p>
@@ -330,7 +330,7 @@ export default function ImportManager() {
                   <tbody className="divide-y divide-slate-100">
                     {filteredUserRows.length === 0 ? (
                       <tr>
-                        <td colSpan={7} className="px-4 py-8 text-center text-[13px] text-slate-400">
+                        <td colSpan={7} className="px-4 py-8 text-center text-[13px] text-slate-500">
                           Tidak ada user dalam kategori ini.
                         </td>
                       </tr>
@@ -394,7 +394,7 @@ export default function ImportManager() {
                                   </span>
                                 ))
                               ) : (
-                                <span className="text-[11px] text-slate-400">Tidak ada perubahan</span>
+                                <span className="text-[11px] text-slate-500">Tidak ada perubahan</span>
                               )}
                             </div>
                           </td>
@@ -406,7 +406,7 @@ export default function ImportManager() {
               </div>
 
               {filteredUserRows.length > 60 && (
-                <p className="border-t border-slate-100 px-4 py-2 text-[12px] text-slate-400">
+                <p className="border-t border-slate-100 px-4 py-2 text-[12px] text-slate-500">
                   +{filteredUserRows.length - 60} user lainnya (total {filteredUserRows.length}).
                 </p>
               )}
@@ -414,7 +414,7 @@ export default function ImportManager() {
               <div className="flex items-center justify-end gap-3 border-t border-slate-200 px-4 py-3">
                 <button
                   onClick={() => setU({ fileName: "", rows: null, lepas: [], nonaktifNips: [] })}
-                  className="flex h-11 items-center rounded-xl border border-slate-300 bg-white px-5 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-50"
+                  className="flex h-11 items-center rounded-xl border border-slate-500 bg-white px-5 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-50"
                 >
                   Batal
                 </button>

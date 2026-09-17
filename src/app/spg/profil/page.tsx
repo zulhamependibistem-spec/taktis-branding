@@ -51,13 +51,11 @@ export default async function ProfilPage() {
 
         {/* Info */}
         <h1 className="mb-1 text-[24px] font-bold text-slate-900">{prof?.full_name}</h1>
-        <p className="mb-1 font-mono text-sm text-slate-400">NIP: {prof?.nip}</p>
+        <p className="mb-1 font-mono text-sm text-slate-500">NIP: {prof?.nip}</p>
         {prof?.area && (
           <div className="mb-8 inline-flex items-center gap-1 rounded-full bg-indigo-600/10 px-3 py-1">
             <Icon name="storefront" size={14} className="text-indigo-600" />
-            <span className="text-[12px] font-bold uppercase tracking-wider text-indigo-600">
-              {prof.area}
-            </span>
+            <span className="text-[12px] font-bold text-indigo-600">{prof.area}</span>
           </div>
         )}
 
@@ -68,7 +66,7 @@ export default async function ProfilPage() {
               <Icon name="person" size={22} />
             </div>
             <div>
-              <p className="text-[13px] text-slate-400">Admin / Supervisor</p>
+              <p className="text-[13px] text-slate-500">Admin / Supervisor</p>
               <p className="text-[16px] font-medium text-slate-900">
                 {supervisorName ?? "-"}
               </p>

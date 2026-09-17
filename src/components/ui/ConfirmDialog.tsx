@@ -66,7 +66,7 @@ export function useConfirmDialog() {
             type="button"
             autoFocus
             onClick={() => close(false)}
-            className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 active:scale-95"
+            className="rounded-lg border border-slate-500 bg-white px-4 py-2 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-100 active:scale-95"
           >
             {pending.cancelText ?? "Batal"}
           </button>

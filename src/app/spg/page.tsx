@@ -51,7 +51,7 @@ export default async function SpgHome() {
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-md pb-4">
+    <div className="mx-auto min-h-screen max-w-md pb-24">
       {/* Header */}
       <header className="sticky top-0 z-nav border-b border-slate-200/60 bg-white px-4 py-3">
         <div className="flex items-center justify-between gap-2">
@@ -66,7 +66,7 @@ export default async function SpgHome() {
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img src={avatar} alt="" className="h-full w-full object-cover" />
               ) : (
-                <Icon name="woman" size={20} filled />
+                <Icon name="person" size={20} filled />
               )}
             </Link>
             <form action={logoutAction}>
@@ -119,7 +119,7 @@ export default async function SpgHome() {
               ) : (
                 <div className="flex flex-col items-center justify-center text-center">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-indigo-700 shadow-md">
-                    <Icon name="woman" size={30} filled />
+                    <Icon name="person" size={30} filled />
                   </div>
                   <span className="mt-1 text-[10px] font-bold text-white/90">Profil</span>
                 </div>
@@ -159,7 +159,7 @@ export default async function SpgHome() {
                   ? "bg-slate-700 hover:bg-slate-800"
                   : isCheckedIn
                     ? "bg-emerald-600 hover:bg-emerald-700"
-                    : "bg-indigo-600 hover:bg-indigo-700 animate-pulse"
+                    : "bg-indigo-600 hover:bg-indigo-700"
               }`}
             >
               <Icon name="camera" size={17} />
@@ -190,7 +190,7 @@ export default async function SpgHome() {
           ))}
         </section>
 
-        <p className="text-center text-[11px] text-slate-400">
+        <p className="text-center text-[11px] text-slate-500">
           TAKTIS Branding · PT Bistem Jaya Mandiri
         </p>
       </main>

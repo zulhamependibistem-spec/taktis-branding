@@ -27,9 +27,9 @@ const ROLE_BADGE: Record<Role, string> = {
 };
 
 const inputCls =
-  "h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-[14px] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20";
+  "h-12 w-full rounded-xl border border-slate-500 bg-white px-4 text-[14px] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500";
 const selectCls =
-  "h-12 w-full appearance-none rounded-xl border border-slate-200 bg-white px-4 pr-10 text-[14px] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20";
+  "h-12 w-full appearance-none rounded-xl border border-slate-500 bg-white px-4 pr-10 text-[14px] outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500";
 
 export default function UsersManager({ initial, loadError }: { initial: Row[]; loadError: string | null }) {
   const [rows, setRows] = useState<Row[]>(initial);
@@ -192,7 +192,7 @@ export default function UsersManager({ initial, loadError }: { initial: Row[]; l
           <Icon
             name="search"
             size={18}
-            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
           />
           <input
             value={query}
@@ -216,7 +216,7 @@ export default function UsersManager({ initial, loadError }: { initial: Row[]; l
           <Icon
             name="chevronDown"
             size={18}
-            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"
+            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
           />
         </div>
         <div className="relative min-w-[160px]">
@@ -232,7 +232,7 @@ export default function UsersManager({ initial, loadError }: { initial: Row[]; l
           <Icon
             name="chevronDown"
             size={18}
-            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"
+            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
           />
         </div>
       </div>
@@ -255,11 +255,11 @@ export default function UsersManager({ initial, loadError }: { initial: Row[]; l
                 <tr>
                   <td colSpan={6} className="px-4 py-12 text-center">
                     <div className="mx-auto flex max-w-xs flex-col items-center justify-center">
-                      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
+                      <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
                         <Icon name="search" size={24} />
                       </div>
                       <p className="text-[14px] font-bold text-slate-800">Tidak ada user ditemukan</p>
-                      <p className="mt-1 text-[12px] text-slate-400">
+                      <p className="mt-1 text-[12px] text-slate-500">
                         Coba sesuaikan kata kunci pencarian atau ganti filter status.
                       </p>
                       <button
@@ -269,7 +269,7 @@ export default function UsersManager({ initial, loadError }: { initial: Row[]; l
                           setStatusFilter("all");
                           setRoleFilter("all");
                         }}
-                        className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-[12px] font-semibold text-indigo-600 transition hover:bg-indigo-50"
+                        className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-slate-500 bg-white px-3 py-1.5 text-[12px] font-semibold text-indigo-600 transition hover:bg-indigo-50"
                       >
                         Reset Filter
                       </button>

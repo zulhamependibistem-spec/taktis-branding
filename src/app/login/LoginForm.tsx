@@ -48,7 +48,7 @@ export default function LoginForm() {
             required
             autoFocus
             placeholder="Masukkan NIP atau No. HP"
-            className="h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600/20"
+            className="h-12 w-full rounded-xl border border-slate-500 bg-white px-4 text-slate-900 placeholder:text-slate-500 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600"
           />
 
           {error ? (
@@ -63,15 +63,15 @@ export default function LoginForm() {
           <button
             type="submit"
             disabled={pending}
-            className="mt-5 h-[52px] w-full rounded-xl bg-indigo-600 text-[15px] font-bold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600/30 active:scale-[0.99] disabled:opacity-60"
+            className="mt-5 h-[52px] w-full rounded-xl bg-indigo-600 text-[15px] font-bold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 active:scale-[0.99] disabled:opacity-60"
           >
             {pending ? "Memproses..." : "Masuk"}
           </button>
         </form>
 
-        <p className="mt-8 text-center text-xs text-slate-400">
+        <p className="mt-8 text-center text-xs text-slate-500">
           TAKTIS Branding · PT Bistem Jaya Mandiri
-          <span className="mx-1.5 text-slate-300">·</span>
+          <span className="mx-1.5 text-slate-400">·</span>
           © Projo Cabang Klender
         </p>
       </div>
