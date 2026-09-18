@@ -53,7 +53,7 @@ export default function CameraCapture({
     if (!video || !video.videoWidth || !video.videoHeight) return;
     if (busy) return;
     setBusy(true);
-    const maxW = 800;
+    const maxW = 640;
     const scale = Math.min(1, maxW / video.videoWidth);
     const w = Math.round(video.videoWidth * scale);
     const h = Math.round(video.videoHeight * scale);
@@ -98,7 +98,7 @@ export default function CameraCapture({
         setBusy(false);
       },
       "image/jpeg",
-      0.7,
+      0.6,
     );
   }
 
