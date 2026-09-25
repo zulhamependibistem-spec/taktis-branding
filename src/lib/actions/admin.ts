@@ -34,13 +34,13 @@ async function picTeamUserIds(supabase: ReturnType<typeof createServerClient>, p
   return new Set([picId, ...tlIds, ...(spgs ?? []).map((s: { id: string }) => s.id)]);
 }
 
-export async function getAttendanceOverview() {
+export async function getAttendanceOverview(date?: string) {
   const user = await getSessionUser();
   if (!user || (user.role !== "admin" && user.role !== "pic" && user.role !== "tl"))
     return { success: false as const, error: "Akses ditolak." };
 
   const supabase = createServerClient();
-  const today = todayWIB();
+  const today = date ?? todayWIB();
 
   let query = supabase
     .from("users")

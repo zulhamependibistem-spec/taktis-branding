@@ -28,6 +28,7 @@ const paths: Record<string, React.ReactNode> = {
   chevronDown: <path d="m6 9 6 6 6-6 1.4 1.4L12 17.8 4.6 10.4 6 9Z" />,
   users: <path d="M9 13a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-3.3 0-8 1.7-8 5v2h8.4a7 7 0 0 1-.4-2.3c0-1 .3-1.9.8-2.7H9Zm7.5-2a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.6 5.6h4.9v-1.8c0-1.9-1.6-3.1-3.5-3.6l-.6-.1c-.9.7-1.5 1.8-1.6 3.1 0 .8.2 1.8.8 2.4Z" />,
   upload: <path d="M12 3l4 5h-3v8h-2V8H8l4-5Zm-7 14h14v3H5v-3Z" />,
+  location: <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" />,
   download: <path d="M12 21l-4-5h3V8h2v8h3l-4 5ZM5 4h14v3H5V4Z" />,
 };
 

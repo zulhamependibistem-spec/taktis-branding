@@ -14,12 +14,27 @@ type Attendance = {
 
 type Photo = { preview: string; blob: Blob } | null;
 
+function gpsErrorMsg(err: unknown): string {
+  const code = (err as GeolocationPositionError | undefined)?.code;
+  switch (code) {
+    case 1:
+      return "Izin akses lokasi ditolak. Izinkan browser mengakses lokasi perangkat Anda di pengaturan, lalu coba lagi.";
+    case 2:
+      return "Lokasi tidak terdeteksi. Pastikan GPS/lokasi perangkat menyala dan Anda berada di area terbuka, lalu coba lagi.";
+    case 3:
+      return "Waktu mencari lokasi habis. Pastikan GPS/lokasi perangkat menyala, lalu coba lagi.";
+    default:
+      return "Lokasi tidak bisa diambil. Nyalakan GPS/lokasi perangkat, lalu coba lagi.";
+  }
+}
+
 export default function CheckIn({ initial, userId }: { initial: Attendance; userId: string }) {
   void userId; // kept for prop compat
   const [attendance, setAttendance] = useState<Attendance>(initial);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
   const [photo, setPhoto] = useState<Photo>(null);
+  const [gpsBlock, setGpsBlock] = useState<string | null>(null);
 
   const isCheckedIn = !!attendance?.check_in_time;
   const isCheckedOut = !!attendance?.check_out_time;
@@ -37,15 +52,22 @@ export default function CheckIn({ initial, userId }: { initial: Attendance; user
     let lat: number | null = null;
     let lng: number | null = null;
 
-    if (action === "in" && "geolocation" in navigator) {
+    if (action === "in") {
+      if (!("geolocation" in navigator)) {
+        setBusy(false);
+        setGpsBlock("Perangkat ini tidak mendukung GPS. Aktifkan layanan lokasi perangkat, lalu coba lagi.");
+        return;
+      }
       try {
         const pos = await new Promise<GeolocationPosition>((res, rej) =>
-          navigator.geolocation.getCurrentPosition(res, rej, { timeout: 5000, enableHighAccuracy: true })
+          navigator.geolocation.getCurrentPosition(res, rej, { timeout: 8000 })
         );
         lat = pos.coords.latitude;
         lng = pos.coords.longitude;
-      } catch {
-        // GPS offline or permission denied
+      } catch (err) {
+        setBusy(false);
+        setGpsBlock(gpsErrorMsg(err));
+        return;
       }
     }
 
@@ -109,15 +131,6 @@ export default function CheckIn({ initial, userId }: { initial: Attendance; user
           <p className="mb-3 rounded-lg bg-slate-100 px-3 py-2 text-[12px] text-slate-500">
             Verifikasi absensi ditangani Admin dari foto &amp; timestamp Anda.
           </p>
-        )}
-
-        {!isCheckedOut && (
-          <div className="mb-3 flex items-center gap-2 rounded-xl bg-slate-100/70 px-3.5 py-2">
-            <Icon name="storefront" size={16} className="text-slate-500" />
-            <span className="text-[12px] font-medium text-slate-600">
-              Lokasi GPS diambil otomatis saat tombol check-in ditekan.
-            </span>
-          </div>
         )}
 
         {!isCheckedOut && (
@@ -190,6 +203,40 @@ export default function CheckIn({ initial, userId }: { initial: Attendance; user
           </p>
         )}
       </section>
+
+      {gpsBlock && (
+        <div
+          className="fixed inset-0 z-modal flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm"
+          onClick={() => setGpsBlock(null)}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            className="w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start gap-3 p-5">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+                <Icon name="location" size={20} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-[15px] font-bold text-slate-900">Aktifkan GPS / Lokasi</h3>
+                <p className="mt-1 text-[13px] leading-relaxed text-slate-500">{gpsBlock}</p>
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 border-t border-slate-100 bg-slate-50/60 px-5 py-3">
+              <button
+                type="button"
+                autoFocus
+                onClick={() => setGpsBlock(null)}
+                className="rounded-lg bg-indigo-600 px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-indigo-500 active:scale-95"
+              >
+                Nyalakan &amp; Coba Lagi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

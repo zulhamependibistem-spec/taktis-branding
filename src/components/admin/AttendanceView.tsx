@@ -62,7 +62,7 @@ function PhotoCell({
       )}
       <div className="min-w-0">
         <p className="text-[10px] font-bold text-slate-500">{label}</p>
-        <p className="font-mono text-[13px] font-semibold text-slate-800">{time ? `${time} WIB` : "-"}</p>
+        <p className="font-mono text-[13px] font-semibold text-slate-800">{time ? `${timeWIB(time)} WIB` : "-"}</p>
       </div>
       {!photo && <span className="ml-auto text-[10px] font-semibold text-slate-500">belum ada foto</span>}
     </button>
@@ -72,16 +72,23 @@ function PhotoCell({
 export default function AttendanceView({
   rows,
   isAdmin = false,
+  date,
+  today,
 }: {
   rows: AttRow[];
   isAdmin?: boolean;
+  date?: string;
+  today?: string;
 }) {
   const router = useRouter();
   const [filter, setFilter] = useState<"all" | "hadir" | "belum">("all");
   const [preview, setPreview] = useState<{ photo: string; label: string } | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [resetErr, setResetErr] = useState<string | null>(null);
-  const [range, setRange] = useState({ dari: "", sampai: "" });
+  const [range, setRange] = useState(() => ({
+    dari: date && date !== today ? date : "",
+    sampai: date && date !== today ? date : "",
+  }));
   const [exporting, setExporting] = useState(false);
   const [exportErr, setExportErr] = useState<string | null>(null);
   const { ask, dialog } = useConfirmDialog();
@@ -94,6 +101,21 @@ export default function AttendanceView({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [preview]);
+
+  useEffect(() => {
+    if (range.dari && range.dari !== date) {
+      router.replace(`/admin/attendance?tanggal=${range.dari}`);
+    }
+  }, [range.dari, date, router]);
+
+  function labelDate(d: string) {
+    return new Date(`${d}T12:00:00Z`).toLocaleDateString("id-ID", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      timeZone: "Asia/Jakarta",
+    });
+  }
 
   const hadir = rows.filter((r) => r.status === "checked_in" || r.status === "checked_out").length;
   const belum = rows.filter((r) => r.status === "not_checked_in").length;
@@ -285,11 +307,27 @@ export default function AttendanceView({
       {filteredRows.length === 0 && (
         <p className="rounded-xl border border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-500">
           {filter === "hadir"
-            ? "Belum ada yang absen hari ini."
+            ? "Belum ada yang absen pada tanggal ini."
             : filter === "belum"
-              ? "Semua SPG sudah absen hari ini!"
+              ? "Semua SPG sudah absen pada tanggal ini!"
               : "Tidak ada SPG terdaftar."}
         </p>
+      )}
+
+      {isAdmin && date && date !== today && (
+        <div className="flex items-center justify-between gap-3 rounded-xl border border-indigo-200 bg-indigo-50 px-3.5 py-2.5">
+          <p className="text-[12px] font-semibold text-indigo-800">Menampilkan absensi {labelDate(date)}</p>
+          <button
+            type="button"
+            onClick={() => {
+              setRange({ dari: "", sampai: "" });
+              router.replace("/admin/attendance");
+            }}
+            className="rounded-lg border border-indigo-300 bg-white px-3 py-1.5 text-[11px] font-bold text-indigo-700 transition hover:bg-indigo-100 active:scale-95"
+          >
+            Hari Ini
+          </button>
+        </div>
       )}
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
