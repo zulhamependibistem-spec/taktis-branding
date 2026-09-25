@@ -46,7 +46,8 @@ export async function getAttendanceOverview(date?: string) {
     .from("users")
     .select("id, full_name, nip, status, supervisor_id, role, area")
     .in("role", ["spg", "tl"])
-    .in("status", ["active", "backup"]);
+    .in("status", ["active", "backup"])
+    .lt("created_at", `${today}T17:00:00Z`); // akhir hari WIB; buang user yang gabung setelah tanggal target
 
   if (user.role === "tl") {
     query = query.eq("supervisor_id", user.id);
@@ -58,6 +59,26 @@ export async function getAttendanceOverview(date?: string) {
   const { data, error } = await query;
   if (error) return { success: false as const, error: "Gagal memuat SPG." };
   const spgs = (data ?? []) as unknown as AttRow[];
+
+  // SPG/TL yang absen di tanggal itu tapi sudah tak ada di roster aktif (mis. nonaktif/keluar)
+  // tetap dihitung sebagai bagian dari "Semua" hari itu.
+  const rosterIds = new Set(spgs.map((s) => s.id));
+  const { data: attDays } = await supabase.from("attendance").select("user_id").eq("report_date", today);
+  const extraIds = [
+    ...new Set(
+      (attDays ?? [])
+        .map((a: { user_id: string }) => a.user_id)
+        .filter((id: string) => !rosterIds.has(id))
+    ),
+  ];
+  if (extraIds.length) {
+    const { data: extra } = await supabase
+      .from("users")
+      .select("id, full_name, nip, status, supervisor_id, role, area")
+      .in("id", extraIds)
+      .in("role", ["spg", "tl"]);
+    spgs.push(...((extra ?? []) as unknown as AttRow[]));
+  }
 
   const supNames = new Map<string, string>();
   const supIds = [...new Set(spgs.map((s) => s.supervisor_id).filter((x): x is string => Boolean(x)))];
